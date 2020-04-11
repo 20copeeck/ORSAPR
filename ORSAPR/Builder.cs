@@ -185,6 +185,23 @@ namespace ORSAPR
             ksEntity circularCopy = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_circularCopy);
             //Интерфейс операции массив по концентрической сетке
             ksCircularCopyDefinition circularCopyDefinition = circularCopy.GetDefinition();
+            //Получаем ось, как результат пересечения двух плоскостей
+            var axis3 = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_axis2Planes);
+            ksAxis2PlanesDefinition axis3PlanesDefinition = axis3.GetDefinition();
+            axis3PlanesDefinition.SetPlane(1, planeXOY);
+            axis3PlanesDefinition.SetPlane(2, planeXOZ);
+            axis3.Create();
+            //Устанавливаем ось операции
+            circularCopyDefinition.SetAxis(axis3);
+            //Устанавливаем параметры копирования
+            circularCopyDefinition.SetCopyParamAlongDir(12, 360, true, false);
+            //Получаем массив копируемых элементов
+            ksEntityCollection entityCollection = circularCopyDefinition.GetOperationArray();
+            entityCollection.Clear();
+            //Заполняем массив копируемых элементов
+            entityCollection.Add(cutExtrusion);
+            //Создаем операцию
+            circularCopy.Create();
 
 
             return true;

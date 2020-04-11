@@ -40,7 +40,7 @@ namespace ORSAPR
         {
             if (!_builder.Build())
             {
-                MessageBox.Show("Иди нахйу!");
+                MessageBox.Show("Ошибочка вышла!");
             }
         }
     }
