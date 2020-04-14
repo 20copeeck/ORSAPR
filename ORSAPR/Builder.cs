@@ -12,6 +12,9 @@ namespace ORSAPR
     public class Builder
     {
         private KompasConnector _kompasConnector;
+        private KompasObject _kompas;
+        private ksPart _part;
+
         public KompasConnector KompasConnector
         {
             get
@@ -21,31 +24,42 @@ namespace ORSAPR
                     _kompasConnector = new KompasConnector();
                 }
                 return _kompasConnector;
-            }                
+            }
         }
 
-        public bool Build()
+        private void Initialize()
         {
-            var kompas = KompasConnector.KompasObject;
-            if (kompas == null)
+            try
             {
-                return false;
+                _kompas = KompasConnector.KompasObject;
+                if (_kompas == null)
+                {
+                    throw new NullReferenceException("Экземпляр компаса равен null");
+                }
             }
-            var iDocument3D = (ksDocument3D)kompas.Document3D();
+            catch (Exception e)
+            {
+                Console.WriteLine($"Ошибка: {e.Message}");
+            }
+
+            var iDocument3D = (ksDocument3D)_kompas.Document3D();
             iDocument3D.Create(false, true);
             //Получение интерфейса детали
-            var iPart = (ksPart)iDocument3D.GetPart((short)Part_Type.pTop_Part);
+            _part = (ksPart)iDocument3D.GetPart((short)Part_Type.pTop_Part);
+        }
 
+        private ksEntity DrawMainDiskSketch()
+        {
             //Получаем интерфейс базовой плоскости ХОZ
-            var planeXOZ = iPart.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);
+            var planeXOZ = _part.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);
             //Создаем новый эскиз
-            var iSketch = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_sketch);
+            var sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
             //Получаем интерфейс свойств эскиза
-            var iDefinitionSketch = iSketch.GetDefinition();
+            var iDefinitionSketch = sketch.GetDefinition();
             //Устанавливаем плоскость эскиза
             iDefinitionSketch.SetPlane(planeXOZ);
             //Создание эскиза
-            iSketch.Create();
+            sketch.Create();
             //Создание нового 2Д документа
             var doc = (ksDocument2D)iDefinitionSketch.BeginEdit();
 
@@ -77,8 +91,8 @@ namespace ORSAPR
             doc.ksArcByPoint(30.122417, 191.56493, 5.5, 30.601773, 197.044001, 35.290726, 193.446041, -1, 1);
             doc.ksLineSeg(36.771128, 189.37867, 35.290726, 193.446041, 1);
             doc.ksArcByPoint(49.832856, 194.13275, 13.9, 36.771128, 189.37867, 49.832856, 180.23275, 1, 1);
-            
-            
+
+
             doc.ksLineSeg(96.030545, 180.23275, 89, 180.23275, 1);
             doc.ksLineSeg(53.280301, 180.23275, 49.832856, 180.23275, 1);
 
@@ -106,7 +120,7 @@ namespace ORSAPR
             doc.ksArcByPoint(64.1, 59.75, 1.3, 62.8, 59.75, 64.1, 58.45, 1, 1);
             doc.ksLineSeg(64.1, 58.45, 67, 58.45, 1);
             doc.ksLineSeg(67, 54.25, 67, 58.45, 1);
-            
+
             doc.ksLineSeg(64.1, 54.25, 67, 54.25, 1);
             doc.ksArcByPoint(64.1, 59.75, 5.5, 64.1, 54.25, 58.6, 59.75, -1, 1);
             doc.ksLineSeg(58.6, 79.944871, 58.6, 59.75, 1);
@@ -121,88 +135,197 @@ namespace ORSAPR
 
             doc.ksLineSeg(0, 0, 100, 0, 3);
             iDefinitionSketch.EndEdit();
+            return sketch;
+        }
 
+        private void SqueezeRotation(ksEntity sketch)
+        {
             //Выдавливание вращением
-            ksEntity rotatedEntity = iPart.NewEntity((short)Obj3dType.o3d_bossRotated);
+            ksEntity rotatedEntity = _part.NewEntity((short)Obj3dType.o3d_bossRotated);
             ksBossRotatedDefinition rotatedDefinition = rotatedEntity.GetDefinition();
-
             rotatedDefinition.SetThinParam(false);
-            rotatedDefinition.SetSketch(iSketch);
-
+            rotatedDefinition.SetSketch(sketch);
             rotatedEntity.Create();
+        }
 
+        //Obj3dType.o3d_planeXOY (plane1)
+        //Obj3dType.o3d_planeYOZ (plane2)
+        //
+        //Obj3dType.o3d_planeYOZ (plane1)
+        //Obj3dType.o3d_planeXOZ (plane2)
+        private ksEntity CreateAxis(Kompas6Constants3D.Obj3dType plane1, Kompas6Constants3D.Obj3dType plane2)
+        {
             //Получаем интерфейсы базовых плоскостей
-            var planeXOY = iPart.GetDefaultEntity((short)Obj3dType.o3d_planeXOY);
-            var planeYOZ = iPart.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
-
+            var firstPlane = _part.GetDefaultEntity((short)plane1);
+            var secondPlane = _part.GetDefaultEntity((short)plane2);
             //Получаем ось, как результат пересечения двух плоскостей
-            var axis = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_axis2Planes);
-            ksAxis2PlanesDefinition axis2PlanesDefinition = axis.GetDefinition();
-            axis2PlanesDefinition.SetPlane(1, planeXOY);
-            axis2PlanesDefinition.SetPlane(2, planeYOZ);
+            var axis = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_axis2Planes);
+            ksAxis2PlanesDefinition axisPlanesDefinition = axis.GetDefinition();
+            axisPlanesDefinition.SetPlane(1, firstPlane);
+            axisPlanesDefinition.SetPlane(2, secondPlane);
             axis.Create();
+            return axis;
+        }
 
+        // Первая наклонная(plane) - Obj3dType.o3d_planeXOY
+        // var axis = CreateAxis(Obj3dType.o3d_planeXOY, Obj3dType.o3d_planeYOZ)
+        // angle = 65
+        //
+        // Вторая наклонная(plane) - Obj3dType.o3d_planeYOZ
+        // var axis = CreateAxis(Obj3dType.o3d_planeYOZ, Obj3dType.o3d_planeXOZ)
+        // angle = -20
+        private ksEntity CreatePlaneAngle(int angle, Kompas6Constants3D.Obj3dType plane, ksEntity axis)
+        {
             //Наклоненная плоскость
-            var planeAngle = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_planeAngle);
+            var planeAngle = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_planeAngle);
             ksPlaneAngleDefinition planeAngleDefinition = planeAngle.GetDefinition();
-            planeAngleDefinition.angle = 65;
-            planeAngleDefinition.SetPlane(planeXOY);
+            planeAngleDefinition.angle = angle;
+            var basePlane = _part.GetDefaultEntity((short)plane);
+            planeAngleDefinition.SetPlane(basePlane);
             planeAngleDefinition.SetAxis(axis);
             planeAngle.Create();
+            return planeAngle;
+        }
 
-            // _________Э_С_К_И_З_____________
-
-            var sketch2 =
-            (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_sketch);
-            var definitionSketch2 = sketch2.GetDefinition();
-            definitionSketch2.SetPlane(planeAngle);
-            sketch2.Create();
-            doc = (ksDocument2D)definitionSketch2.BeginEdit();
-
+        private ksEntity DrawAirVentsSketch()
+        {
+            var axis = CreateAxis(Obj3dType.o3d_planeXOY, Obj3dType.o3d_planeYOZ);
+            var plane = CreatePlaneAngle(65, Obj3dType.o3d_planeXOY, axis);
+            var sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
+            //Получаем интерфейс свойств эскиза
+            var iDefinitionSketch = sketch.GetDefinition();
+            iDefinitionSketch.SetPlane(plane);
+            sketch.Create();
+            //Создание нового 2Д документа
+            var doc = (ksDocument2D)iDefinitionSketch.BeginEdit();
             doc.ksCircle(156.247227, 0, 15, 1);
+            iDefinitionSketch.EndEdit();
+            return sketch;
+        }
 
-            definitionSketch2.EndEdit();
-
+        // DrawSketch2()
+        // extrusionParam.depthReverse = 40;
+        //
+        // DrawSketch3()
+        // extrusionParam.depthNormal = 65;
+        //
+        // DrawSketch4()
+        // extrusionParam.depthNormal = 110;
+        private ksEntity CutExtrusion(ksEntity sketch, Kompas6Constants3D.Direction_Type direction, int depth)
+        {
             //Операция вырезать выдавливанием
-            ksEntity cutExtrusion = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksEntity cutExtrusion = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
             //Интерфейс операции вырезать выдавливанием
             ksCutExtrusionDefinition extrusionDefinition = cutExtrusion.GetDefinition();
             //Интерфейс структуры параметров выдавливания
-            ksExtrusionParam extrusionParam =
-            (ksExtrusionParam)extrusionDefinition.ExtrusionParam();
+            ksExtrusionParam extrusionParam = (ksExtrusionParam)extrusionDefinition.ExtrusionParam();
             //Эскиз операции вырезать выдавливанием
-            extrusionDefinition.SetSketch(sketch2);
-            // Направление выдавливания
-            extrusionParam.direction = (short)Direction_Type.dtReverse;
-            // Тип выдавливания
-            extrusionParam.typeReverse = (short)End_Type.etBlind;
-            // Глубина выдавливания
-            extrusionParam.depthReverse = 40;
+            extrusionDefinition.SetSketch(sketch);
+            if (direction == Direction_Type.dtReverse)
+            {
+                // Направление выдавливания
+                extrusionParam.direction = (short)direction;
+                // Тип выдавливания
+                extrusionParam.typeReverse = (short)End_Type.etBlind;
+                // Глубина выдавливания
+                extrusionParam.depthReverse = depth;
+            }
+            else
+            {
+                // Направление выдавливания
+                extrusionParam.direction = (short)direction;
+                // Тип выдавливания
+                extrusionParam.typeNormal = (short)End_Type.etBlind;
+                // Глубина выдавливания
+                extrusionParam.depthNormal = depth;
+            }
             // Создание операции
             cutExtrusion.Create();
+            return cutExtrusion;
+        }
 
+        // numberElements = 12
+        // CutExtrusion() с dtReverse
+        //
+        // numberElements = 5
+        // CutExtrusion() с dtNormal
+        private void CopyInCircules(int numberElements, ksEntity arrayElements)
+        {
             //Операция массив по концентрической сетке
-            ksEntity circularCopy = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_circularCopy);
+            ksEntity circularCopy = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_circularCopy);
             //Интерфейс операции массив по концентрической сетке
             ksCircularCopyDefinition circularCopyDefinition = circularCopy.GetDefinition();
-            //Получаем ось, как результат пересечения двух плоскостей
-            var axis3 = (ksEntity)iPart.NewEntity((short)Obj3dType.o3d_axis2Planes);
-            ksAxis2PlanesDefinition axis3PlanesDefinition = axis3.GetDefinition();
-            axis3PlanesDefinition.SetPlane(1, planeXOY);
-            axis3PlanesDefinition.SetPlane(2, planeXOZ);
-            axis3.Create();
             //Устанавливаем ось операции
-            circularCopyDefinition.SetAxis(axis3);
+            var axis = CreateAxis(Obj3dType.o3d_planeXOY, Obj3dType.o3d_planeXOZ);
+            circularCopyDefinition.SetAxis(axis);
             //Устанавливаем параметры копирования
-            circularCopyDefinition.SetCopyParamAlongDir(12, 360, true, false);
+            circularCopyDefinition.SetCopyParamAlongDir(numberElements, 360, true, false);
             //Получаем массив копируемых элементов
             ksEntityCollection entityCollection = circularCopyDefinition.GetOperationArray();
             entityCollection.Clear();
             //Заполняем массив копируемых элементов
-            entityCollection.Add(cutExtrusion);
+            entityCollection.Add(arrayElements);
             //Создаем операцию
             circularCopy.Create();
+        }
 
+        private ksEntity DrawBoltHoleSketch()
+        {
+            var planeYOZ = _part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
+            var sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
+            //Получаем интерфейс свойств эскиза
+            var iDefinitionSketch = sketch.GetDefinition();
+            iDefinitionSketch.SetPlane(planeYOZ);
+            sketch.Create();
+            //Создание нового 2Д документа
+            var doc = (ksDocument2D)iDefinitionSketch.BeginEdit();
+            doc.ksCircle(0, 69.85, 7.5, 1);
+            iDefinitionSketch.EndEdit();
+            return sketch;
+        }
+
+        private ksEntity DrawNippleHoleSketch()
+        {
+            var axis = CreateAxis(Obj3dType.o3d_planeYOZ, Obj3dType.o3d_planeXOZ);
+            var planeAngle = CreatePlaneAngle(-20, Obj3dType.o3d_planeYOZ, axis);
+            var sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
+            //Получаем интерфейс свойств эскиза
+            var iDefinitionSketch = sketch.GetDefinition();
+            iDefinitionSketch.SetPlane(planeAngle);
+            sketch.Create();
+            //Создание нового 2Д документа
+            var doc = (ksDocument2D)iDefinitionSketch.BeginEdit();
+            doc.ksCircle(-165.178487, 0, 5.65, 1);
+            iDefinitionSketch.EndEdit();
+            return sketch;
+        }
+
+        public bool Build()
+        {
+            Initialize();
+            // Отрисовка основного эскиза
+            var mainDiskSketch = DrawMainDiskSketch();
+            // Выдавливание вращением
+            SqueezeRotation(mainDiskSketch);
+                        
+            // Отрисовка эскиза вентиляционного отверстия
+            var airVentsSketch = DrawAirVentsSketch();
+            // Вырезать выдавливанием 
+            var airVents = CutExtrusion(airVentsSketch, Direction_Type.dtReverse, 40);
+            // Массив по концентрической сетке
+            CopyInCircules(12, airVents);
+
+            // Отрисовать эскиз отверстия под болт
+            var boltHoleSketch = DrawBoltHoleSketch();
+            // Вырезать выдавливанием
+            var boltHole = CutExtrusion(boltHoleSketch, Direction_Type.dtNormal, 65);
+            // Массив по концентрической сетке
+            CopyInCircules(5, boltHole);
+
+            // Отрисовка эскиза под ниппель
+            var nippleHoleSketch = DrawNippleHoleSketch();
+            // Вырезать выдавливанием
+            CutExtrusion(nippleHoleSketch, Direction_Type.dtNormal, 110);
 
             return true;
         }
