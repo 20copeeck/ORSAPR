@@ -300,7 +300,7 @@ namespace ORSAPR
             return sketch;
         }
 
-        public bool Build()
+        public bool Build(DiskParams diskParams)
         {
             Initialize();
             // Отрисовка основного эскиза
