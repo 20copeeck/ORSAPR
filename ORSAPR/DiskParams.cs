@@ -16,6 +16,8 @@ namespace ORSAPR
         public const int DefaultAirVentsCount = 12;
         public const decimal DefaultAirVentsDiameter = 10;
 
+        private ParamsValidator _paramsValidator;
+
         private double _diskDiameter = DefaultDiskDiameter;
         private double _width = DefaultWidth;
         private int _boltsCount = DefaultBoltsCount;
@@ -32,47 +34,87 @@ namespace ORSAPR
             }
             set
             {
-                try
+                if (!_paramsValidator.IsValidDiskDiameter(value))
                 {
-                    if (value > 1)
-                    {
-
-                    }
+                    throw new ArgumentException("Неверное значение диаметра диска");
                 }
-                catch
-                {
-
-                }
+                
                 _diskDiameter = value;
+                _paramsValidator.AvailableParameters.ChangeCurrentValues(value);
             }
         }
-        public double Width { get; set; }
-        public int BoltsCount { get; set; }
-        public double BoltArrangementDiameter { get; set; }
-        public double CentralHoleDiameter { get; set; }
-        public int AirVentsCount { get; set; }
-        public decimal AirVentsDiameter 
+        public double Width
         {
             get
             {
-                return _airVentsDiameter;
+                return _width;
             }
             set
             {
-                try
+                if (!_paramsValidator.IsValidWidth(value))
                 {
-                    if (value > 1)
-                    {
-
-                    }
+                    throw new ArgumentException("Неверное значение ширины диска");
                 }
-                catch
-                {
 
-                }
-                _airVentsDiameter = value;
+                _width = value;
             }
         }
+        public int BoltsCount
+        {
+            get
+            {
+                return _boltsCount;
+            }
+            set
+            {
+                if (!_paramsValidator.IsValidBoltsCount(value))
+                {
+                    throw new ArgumentException("Неверное значение количества отверстий под болты");
+                }
 
+                _boltsCount = value;
+                _paramsValidator.AvailableParameters.ChangeCurrentValues(DiskDiameter, value, BoltArrangementDiameter);
+            }
+        }
+        public double BoltArrangementDiameter
+        {
+            get
+            {
+                return _boltArrangementDiameter;
+            }
+            set
+            {
+                if (!_paramsValidator.IsValidBoltArrangementDiameter(value))
+                {
+                    throw new ArgumentException("Неверное значение PCD");
+                }
+
+                _boltArrangementDiameter = value;
+                _paramsValidator.AvailableParameters.ChangeCurrentValues(DiskDiameter, BoltsCount, value);
+            }
+        }
+        public double CentralHoleDiameter
+        {
+            get
+            {
+                return _centralHoleDiameter;
+            }
+            set
+            {
+                if (!_paramsValidator.IsValidCentralHoleDiameter(value))
+                {
+                    throw new ArgumentException("Неверное значение центрального отверстия диска");
+                }
+
+                _centralHoleDiameter = value;
+            }
+        }
+        public int AirVentsCount { get; set; }
+        public decimal AirVentsDiameter { get; set; }
+
+        public DiskParams()
+        {
+            _paramsValidator = new ParamsValidator(DefaultDiskDiameter, DefaultBoltsCount, DefaultBoltArrangementDiameter);
+        }
     }
 }
