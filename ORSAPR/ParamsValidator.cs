@@ -1,48 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ORSAPR
 {
-    public class ParamsValidator
+    public static class ParamsValidator
     {
-        public AvailableParameters AvailableParameters { get; }
-
-        public ParamsValidator(double diskDiameter, int boltsCount, double boltArrangementDiameter)
+        public static bool IsValidDiskDiameter(AvailableParameters availableParameters, double diskDiameter)
         {
-            AvailableParameters = new AvailableParameters(diskDiameter, boltsCount, boltArrangementDiameter);
+
+            return availableParameters.DiskDiameterValues.Any(value => value.EqualTo(diskDiameter));
         }
 
-        public bool IsValidDiskDiameter(double diskDiameter)
+        public static bool IsValidWidth(AvailableParameters availableParameters, double width)
         {
-            return IsValidParam(0, diskDiameter);
+            return availableParameters.WidthValues.Any(value => value.EqualTo(width));
         }
 
-        public bool IsValidWidth(double width)
+        public static bool IsValidBoltsCount(AvailableParameters availableParameters, double boltsCount)
         {
-            return IsValidParam(1, width);
+            return availableParameters.BoltsCountValues.Any(value => value == boltsCount);
         }
 
-        public bool IsValidBoltsCount(double boltsCount)
+        public static bool IsValidBoltArrangementDiameter(AvailableParameters availableParameters, double boltArrangementDiameter)
         {
-            return IsValidParam(2, boltsCount);
+            return availableParameters.BoltArrangementDiameterValues.Any(value => value.EqualTo(boltArrangementDiameter));
         }
 
-        public bool IsValidBoltArrangementDiameter(double boltArrangementDiameter)
+        public static bool IsValidCentralHoleDiameter(AvailableParameters availableParameters, double centralHoleDiameter)
         {
-            return IsValidParam(3, boltArrangementDiameter);
-        }
-
-        public bool IsValidCentralHoleDiameter(double centralHoleDiameter)
-        {
-            return IsValidParam(4, centralHoleDiameter);
-        }
-
-        private bool IsValidParam(int index, object param)
-        {
-            return (AvailableParameters.CurrentValues[index] as List<double>).Any(d => d.Equals(param));
+            return availableParameters.CentralHoleDiameterValues.Any(value => value.EqualTo(centralHoleDiameter));
         }
     }
 }

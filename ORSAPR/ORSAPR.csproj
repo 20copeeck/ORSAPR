@@ -48,7 +48,9 @@
   <ItemGroup>
     <Compile Include="AvailableParameters.cs" />
     <Compile Include="Builder.cs" />
+    <Compile Include="Converter.cs" />
     <Compile Include="DiskParams.cs" />
+    <Compile Include="DoubleExtensions.cs" />
     <Compile Include="KompasConnector.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

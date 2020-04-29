@@ -1,15 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace ORSAPR
 {
     public class AvailableParameters
     {
         private List<List<object>> _values;
-        public object[] CurrentValues { get; private set; }
+
+
+        private List<double> _diskDiameterValues;
+        private List<double> _widthValues;
+        private List<int> _boltsCountValues;
+        private List<double> _boltArrangementDiameterValues;
+        private List<double> _centralHoleDiameterValues;
+
+
+        public IReadOnlyList<double> DiskDiameterValues => _diskDiameterValues.AsReadOnly();
+
+        public IReadOnlyList<double> WidthValues => _widthValues.AsReadOnly();
+
+        public IReadOnlyList<int> BoltsCountValues => _boltsCountValues.AsReadOnly();
+
+        public IReadOnlyList<double> BoltArrangementDiameterValues => _boltArrangementDiameterValues.AsReadOnly();
+
+        public IReadOnlyList<double> CentralHoleDiameterValues => _centralHoleDiameterValues.AsReadOnly();
+
+
+
         public AvailableParameters(double diskDiameter, int boltsCount, double boltArrangementDiameter)
         {
             _values = new List<List<object>>();
@@ -305,7 +324,7 @@ namespace ORSAPR
             _values[47].Add(new List<double>() { 6.5, 7, 8, 10 });
             _values[47].Add(6);
             _values[47].Add(139.7);
-            _values[47].Add(new List<double>() { 67.1, 92.5, 106.1, 108.5, 110.1  });
+            _values[47].Add(new List<double>() { 67.1, 92.5, 106.1, 108.5, 110.1 });
 
             _values[48].Add(16);
             _values[48].Add(new List<double>() { 5.5 });
@@ -439,28 +458,31 @@ namespace ORSAPR
             _values[69].Add(114.3);
             _values[69].Add(new List<double>() { 71.6 });
 
-            CurrentValues = new object[5];
-            CurrentValues[0] = new List<int> { 13, 14, 15, 16, 17, 18, 19 };
+            _diskDiameterValues = new List<double> { 13, 14, 15, 16, 17, 18, 19 }; // поменять на double значения
             ChangeCurrentValues(diskDiameter, boltsCount, boltArrangementDiameter);
         }
 
-        public void ChangeCurrentValues (double diskDiameter)
+        public void ChangeCurrentValues(double diskDiameter)
         {
             var selectedDiameterLines = ChangeCurrentDiskDiameter(diskDiameter);
             var currentLine = selectedDiameterLines.First();
-            CurrentValues[1] = currentLine[1];
-            CurrentValues[4] = currentLine[4];
+            _widthValues = (List<double>)currentLine[1];
+            _centralHoleDiameterValues = (List<double>)currentLine[4];
+
+            ValuesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void ChangeCurrentValues(double diskDiameter, int boltsCount, double boltArrangementDiameter)
         {
             var selectedDiameterLines = ChangeCurrentDiskDiameter(diskDiameter);
-            var currentLine = selectedDiameterLines.Where(item => item[2].Equals(boltsCount) && item[3].Equals(boltArrangementDiameter)).First();
-            CurrentValues[1] = currentLine[1];
-            CurrentValues[4] = currentLine[4];
+            var currentLine = selectedDiameterLines.Where(item => (int)item[2] == boltsCount && ((double)item[3]).EqualTo(boltArrangementDiameter)).First();
+            _widthValues = (List<double>)currentLine[1];
+            _centralHoleDiameterValues = (List<double>)currentLine[4];
+
+            ValuesChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private List<List<object>> ChangeCurrentDiskDiameter (double diskDiameter)
+        private List<List<object>> ChangeCurrentDiskDiameter(double diskDiameter)
         {
             var selectedDiameterLines = _values.Where(t => (int)t[0] == diskDiameter).ToList();
             var collectionBoltsCount = new List<int>();
@@ -469,7 +491,7 @@ namespace ORSAPR
             foreach (var line in selectedDiameterLines)
             {
                 var boltsCountItem = (int)line[2];
-                if(!collectionBoltsCount.Contains(boltsCountItem))
+                if (!collectionBoltsCount.Contains(boltsCountItem))
                 {
                     collectionBoltsCount.Add(boltsCountItem);
                 }
@@ -481,9 +503,11 @@ namespace ORSAPR
                 }
             }
 
-            CurrentValues[2] = collectionBoltsCount;
-            CurrentValues[3] = collectionBoltArrangementDiameter;
+            _boltsCountValues = collectionBoltsCount;
+            _boltArrangementDiameterValues = collectionBoltArrangementDiameter;
             return selectedDiameterLines;
         }
+
+        public event EventHandler ValuesChanged;
     }
 }

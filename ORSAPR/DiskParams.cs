@@ -9,14 +9,12 @@ namespace ORSAPR
     public class DiskParams
     {
         public const double DefaultDiskDiameter = 16;
-        public const double DefaultWidth = 6;
+        public const double DefaultWidth = 6.5;
         public const int DefaultBoltsCount = 5;
         public const double DefaultBoltArrangementDiameter = 139.7;
         public const double DefaultCentralHoleDiameter = 108.5;
         public const int DefaultAirVentsCount = 12;
         public const decimal DefaultAirVentsDiameter = 10;
-
-        private ParamsValidator _paramsValidator;
 
         private double _diskDiameter = DefaultDiskDiameter;
         private double _width = DefaultWidth;
@@ -26,6 +24,9 @@ namespace ORSAPR
         private int _airVentsCount = DefaultAirVentsCount;
         private decimal _airVentsDiameter = DefaultAirVentsDiameter;
 
+        public AvailableParameters AvailableParameters { get; }
+            = new AvailableParameters(DefaultDiskDiameter, DefaultBoltsCount, DefaultBoltArrangementDiameter);
+
         public double DiskDiameter
         {
             get
@@ -34,13 +35,13 @@ namespace ORSAPR
             }
             set
             {
-                if (!_paramsValidator.IsValidDiskDiameter(value))
+                if (!ParamsValidator.IsValidDiskDiameter(AvailableParameters, value))
                 {
                     throw new ArgumentException("Неверное значение диаметра диска");
                 }
-                
+
                 _diskDiameter = value;
-                _paramsValidator.AvailableParameters.ChangeCurrentValues(value);
+                AvailableParameters.ChangeCurrentValues(value);
             }
         }
         public double Width
@@ -51,7 +52,7 @@ namespace ORSAPR
             }
             set
             {
-                if (!_paramsValidator.IsValidWidth(value))
+                if (!ParamsValidator.IsValidWidth(AvailableParameters, value))
                 {
                     throw new ArgumentException("Неверное значение ширины диска");
                 }
@@ -67,13 +68,13 @@ namespace ORSAPR
             }
             set
             {
-                if (!_paramsValidator.IsValidBoltsCount(value))
+                if (!ParamsValidator.IsValidBoltsCount(AvailableParameters, value))
                 {
                     throw new ArgumentException("Неверное значение количества отверстий под болты");
                 }
 
                 _boltsCount = value;
-                _paramsValidator.AvailableParameters.ChangeCurrentValues(DiskDiameter, value, BoltArrangementDiameter);
+                AvailableParameters.ChangeCurrentValues(DiskDiameter, value, BoltArrangementDiameter);
             }
         }
         public double BoltArrangementDiameter
@@ -84,13 +85,13 @@ namespace ORSAPR
             }
             set
             {
-                if (!_paramsValidator.IsValidBoltArrangementDiameter(value))
+                if (!ParamsValidator.IsValidBoltArrangementDiameter(AvailableParameters, value))
                 {
                     throw new ArgumentException("Неверное значение PCD");
                 }
 
                 _boltArrangementDiameter = value;
-                _paramsValidator.AvailableParameters.ChangeCurrentValues(DiskDiameter, BoltsCount, value);
+                AvailableParameters.ChangeCurrentValues(DiskDiameter, BoltsCount, value);
             }
         }
         public double CentralHoleDiameter
@@ -101,7 +102,7 @@ namespace ORSAPR
             }
             set
             {
-                if (!_paramsValidator.IsValidCentralHoleDiameter(value))
+                if (!ParamsValidator.IsValidCentralHoleDiameter(AvailableParameters, value))
                 {
                     throw new ArgumentException("Неверное значение центрального отверстия диска");
                 }
@@ -111,10 +112,5 @@ namespace ORSAPR
         }
         public int AirVentsCount { get; set; }
         public decimal AirVentsDiameter { get; set; }
-
-        public DiskParams()
-        {
-            _paramsValidator = new ParamsValidator(DefaultDiskDiameter, DefaultBoltsCount, DefaultBoltArrangementDiameter);
-        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.LaunchCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -46,9 +47,19 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.AirVentsDiameterNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.BuildButton = new System.Windows.Forms.Button();
+            this.DiskDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.WidthBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.BoltsCountBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.BoltArrangementDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.CentralHoleDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AirVentsDiameterNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DiskDiameterBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WidthBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BoltsCountBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BoltArrangementDiameterBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CentralHoleDiameterBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -98,7 +109,6 @@
             this.BoltsCountComboBox.Size = new System.Drawing.Size(64, 24);
             this.BoltsCountComboBox.TabIndex = 4;
             this.BoltsCountComboBox.Text = "5";
-            this.BoltsCountComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // CentralHoleDiameterComboBox
             // 
@@ -108,7 +118,6 @@
             this.CentralHoleDiameterComboBox.Size = new System.Drawing.Size(64, 24);
             this.CentralHoleDiameterComboBox.TabIndex = 7;
             this.CentralHoleDiameterComboBox.Text = "108.5";
-            this.CentralHoleDiameterComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // BoltArrangementDiameterComboBox
             // 
@@ -118,7 +127,6 @@
             this.BoltArrangementDiameterComboBox.Size = new System.Drawing.Size(64, 24);
             this.BoltArrangementDiameterComboBox.TabIndex = 5;
             this.BoltArrangementDiameterComboBox.Text = "139.7";
-            this.BoltArrangementDiameterComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // WidthComboBox
             // 
@@ -128,23 +136,15 @@
             this.WidthComboBox.Size = new System.Drawing.Size(64, 24);
             this.WidthComboBox.TabIndex = 6;
             this.WidthComboBox.Text = "6";
-            this.WidthComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // DiskDiameterComboBox
             // 
             this.DiskDiameterComboBox.FormattingEnabled = true;
-            this.DiskDiameterComboBox.Items.AddRange(new object[] {
-            "13",
-            "14",
-            "15",
-            "16",
-            "17"});
             this.DiskDiameterComboBox.Location = new System.Drawing.Point(212, 27);
             this.DiskDiameterComboBox.Name = "DiskDiameterComboBox";
             this.DiskDiameterComboBox.Size = new System.Drawing.Size(64, 24);
             this.DiskDiameterComboBox.TabIndex = 3;
             this.DiskDiameterComboBox.Text = "16";
-            this.DiskDiameterComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -204,7 +204,6 @@
             this.AirVentsCountComboBox.Size = new System.Drawing.Size(64, 24);
             this.AirVentsCountComboBox.TabIndex = 14;
             this.AirVentsCountComboBox.Text = "12";
-            this.AirVentsCountComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -246,7 +245,6 @@
             0,
             0,
             0});
-            this.AirVentsDiameterNumericUpDown.ValueChanged += new System.EventHandler(this.AirVentsDiameterNumericUpDown_ValueChanged);
             // 
             // BuildButton
             // 
@@ -277,6 +275,11 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AirVentsDiameterNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DiskDiameterBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WidthBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BoltsCountBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BoltArrangementDiameterBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CentralHoleDiameterBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -302,6 +305,11 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button BuildButton;
         private System.Windows.Forms.NumericUpDown AirVentsDiameterNumericUpDown;
+        private System.Windows.Forms.BindingSource DiskDiameterBindingSource;
+        private System.Windows.Forms.BindingSource WidthBindingSource;
+        private System.Windows.Forms.BindingSource BoltsCountBindingSource;
+        private System.Windows.Forms.BindingSource BoltArrangementDiameterBindingSource;
+        private System.Windows.Forms.BindingSource CentralHoleDiameterBindingSource;
     }
 }
 

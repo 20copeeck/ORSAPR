@@ -33,7 +33,7 @@ namespace ORSAPR
                 kompas = (KompasObject)Activator.CreateInstance(type);
                 kompas.Visible = true;
             }
-                                    
+
             kompas.ActivateControllerAPI();
             KompasObject = kompas;
         }
