@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ORSAPR
 {
-    class Converter
+    public static class Converter
     {
-
+        public static double ConvertToSystemOfUnits(int value)
+        {
+            return value * 25.4;
+        }
     }
 }

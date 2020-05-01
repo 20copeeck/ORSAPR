@@ -8,24 +8,55 @@ namespace ORSAPR
 {
     public class DiskParams
     {
-        public const double DefaultDiskDiameter = 16;
-        public const double DefaultWidth = 6.5;
-        public const int DefaultBoltsCount = 5;
-        public const double DefaultBoltArrangementDiameter = 139.7;
-        public const double DefaultCentralHoleDiameter = 108.5;
-        public const int DefaultAirVentsCount = 12;
-        public const decimal DefaultAirVentsDiameter = 10;
+        public readonly double DefaultDiskDiameter = 406.4;
+        public readonly double DefaultWidth = 165.1;
+        public readonly int DefaultBoltsCount = 5;
+        public readonly double DefaultBoltArrangementDiameter = 139.7;
+        public readonly double DefaultCentralHoleDiameter = 108.5;
+        public readonly int DefaultAirVentsCount = 12;
+        public readonly decimal DefaultAirVentsDiameter = 10;
 
-        private double _diskDiameter = DefaultDiskDiameter;
-        private double _width = DefaultWidth;
-        private int _boltsCount = DefaultBoltsCount;
-        private double _boltArrangementDiameter = DefaultBoltArrangementDiameter;
-        private double _centralHoleDiameter = DefaultCentralHoleDiameter;
-        private int _airVentsCount = DefaultAirVentsCount;
-        private decimal _airVentsDiameter = DefaultAirVentsDiameter;
+        public readonly int AirVentsAnglePlane = 65;
+        public readonly int NippleHoleAnglePlane = -20;
+        public readonly double NippleHoleDiameter = 11.3;
+        public readonly double BoltHoleDiameter = 15;
+        public readonly double LengthOfAttachedPlane = 25.69;
+        public readonly int DistanceFromBasePlane = 60;
+        public readonly int DepthExtrusionAirVentsSketch = 45;
+        public readonly int DepthExtrusionBoltHoleSketch = 65;
+        public readonly int DepthExtrusionNippleHoleSketch = 110;
+
+        public readonly Dictionary<double, double> AirVentsArrangementDiameters = new Dictionary<double, double>
+        {
+            {330.2, 123.1},
+            {355.6, 134.61},
+            {381, 146.12},
+            {406.4, 157.63},
+            {431.8, 169.14},
+            {457.2, 180.65},
+            {482.6, 192.16}
+        };
+
+        public readonly Dictionary<double, double> NippleHoleArrangementDiameters = new Dictionary<double, double>
+        {
+            {330.2, 130.43},
+            {355.6, 142.36},
+            {381, 154.29},
+            {406.4, 166.22},
+            {431.8, 178.29},
+            {457.2, 190.23},
+            {482.6, 202.16}
+        };
+
+        private double _diskDiameter;
+        private double _width;
+        private int _boltsCount;
+        private double _boltArrangementDiameter;
+        private double _centralHoleDiameter;
+        private int _airVentsCount;
+        private decimal _airVentsDiameter;
 
         public AvailableParameters AvailableParameters { get; }
-            = new AvailableParameters(DefaultDiskDiameter, DefaultBoltsCount, DefaultBoltArrangementDiameter);
 
         public double DiskDiameter
         {
@@ -112,5 +143,19 @@ namespace ORSAPR
         }
         public int AirVentsCount { get; set; }
         public decimal AirVentsDiameter { get; set; }
+
+        public DiskParams()
+        {
+             _diskDiameter = DefaultDiskDiameter;
+             _width = DefaultWidth;
+             _boltsCount = DefaultBoltsCount;
+             _boltArrangementDiameter = DefaultBoltArrangementDiameter;
+             _centralHoleDiameter = DefaultCentralHoleDiameter;
+             _airVentsCount = DefaultAirVentsCount;
+             _airVentsDiameter = DefaultAirVentsDiameter;
+
+            AvailableParameters = new AvailableParameters(DefaultDiskDiameter, DefaultBoltsCount, 
+                DefaultBoltArrangementDiameter);
+        }
     }
 }
