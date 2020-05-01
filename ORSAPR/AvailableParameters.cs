@@ -8,14 +8,16 @@ namespace ORSAPR
     public class AvailableParameters
     {
         private List<List<object>> _values;
-
+        private Dictionary<int, List<int>> _airVentsCountRelations;
 
         private List<double> _diskDiameterValues;
         private List<double> _widthValues;
         private List<int> _boltsCountValues;
         private List<double> _boltArrangementDiameterValues;
         private List<double> _centralHoleDiameterValues;
+        private List<int> _airVentsCountValues;
 
+        
 
         public IReadOnlyList<double> DiskDiameterValues => _diskDiameterValues.AsReadOnly();
 
@@ -27,7 +29,10 @@ namespace ORSAPR
 
         public IReadOnlyList<double> CentralHoleDiameterValues => _centralHoleDiameterValues.AsReadOnly();
 
+        public IReadOnlyList<int> AirVentsCountValues => _airVentsCountValues.AsReadOnly();
 
+        public decimal MaxAirVentsDiameter { get; } = 40;
+        public decimal MinAirVentsDiameter { get; } = 15;
 
         public AvailableParameters(double diskDiameter, int boltsCount, double boltArrangementDiameter)
         {
@@ -458,7 +463,18 @@ namespace ORSAPR
             _values[69].Add(114.3);
             _values[69].Add(new List<double>() { 71.6 });
 
-            _diskDiameterValues = new List<double> { 13, 14, 15, 16, 17, 18, 19 }; // поменять на double значения
+            _airVentsCountRelations = new Dictionary<int, List<int>>()
+            {
+                {13, new List<int> { 10, 11, 12 }},
+                {14, new List<int> { 10, 11, 12, 13, 14 }},
+                {15, new List<int> { 10, 11, 12, 13, 14 }},
+                {16, new List<int> { 12, 13, 14, 15, 16 }},
+                {17, new List<int> { 12, 13, 14, 15, 16 }},
+                {18, new List<int> { 14, 15, 16, 17, 18 }},
+                {19, new List<int> { 16, 17, 18, 19, 20 }}
+            };
+
+            _diskDiameterValues = new List<double> { 13, 14, 15, 16, 17, 18, 19 }; // поменять на double значения 
             ChangeCurrentValues(diskDiameter, boltsCount, boltArrangementDiameter);
         }
 
@@ -484,6 +500,8 @@ namespace ORSAPR
 
         private List<List<object>> ChangeCurrentDiskDiameter(double diskDiameter)
         {
+            _airVentsCountValues = _airVentsCountRelations[(int)diskDiameter];
+
             var selectedDiameterLines = _values.Where(t => (int)t[0] == diskDiameter).ToList();
             var collectionBoltsCount = new List<int>();
             var collectionBoltArrangementDiameter = new List<double>();

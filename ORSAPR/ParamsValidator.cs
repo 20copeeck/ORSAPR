@@ -30,5 +30,16 @@ namespace ORSAPR
         {
             return availableParameters.CentralHoleDiameterValues.Any(value => value.EqualTo(centralHoleDiameter));
         }
+
+        public static bool IsValidAirVentsCount(AvailableParameters availableParameters, double airVentsCount)
+        {
+            return availableParameters.AirVentsCountValues.Any(value => value == airVentsCount);
+        }
+
+        public static bool IsValidAirVentsDiameter(AvailableParameters availableParameters, decimal airVentsDiameter)
+        {
+            return availableParameters.MaxAirVentsDiameter >= airVentsDiameter && 
+                availableParameters.MinAirVentsDiameter <= airVentsDiameter;
+        }
     }
 }

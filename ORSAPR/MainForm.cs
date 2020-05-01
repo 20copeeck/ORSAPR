@@ -14,18 +14,29 @@ using System.Collections.Specialized;
 
 namespace ORSAPR
 {
+    /// <summary>
+    /// Главная форма 
+    /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Отрисовщик диска
+        /// </summary>
         private Builder _builder;
+        /// <summary>
+        /// Параметры диска
+        /// </summary>
         private DiskParams _diskParams;
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
 
             _builder = new Builder();
             _diskParams = new DiskParams();
-
 
             ChangeComboBoxesItems();
             _diskParams.AvailableParameters.ValuesChanged += ChangeComboBoxesItems;
@@ -76,7 +87,7 @@ namespace ORSAPR
         {
             if (!_builder.Build(_diskParams))
             {
-                MessageBox.Show("Ошибочка вышла!");
+                MessageBox.Show("Ошибка построения");
             }
         }
 

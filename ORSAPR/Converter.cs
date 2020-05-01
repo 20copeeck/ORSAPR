@@ -8,9 +8,14 @@ namespace ORSAPR
 {
     public static class Converter
     {
-        public static double ConvertToSystemOfUnits(int value)
+        public static double ConvertToSystemOfUnits(double value)
         {
             return value * 25.4;
+        }
+
+        public static double ConvertFromSystemOfUnits(double value)
+        {
+            return value / 25.4;
         }
     }
 }

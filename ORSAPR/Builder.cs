@@ -9,6 +9,9 @@ using Kompas6Constants;
 
 namespace ORSAPR
 {
+    /// <summary>
+    /// Отрисовщик-построитель диска
+    /// </summary>
     public class Builder
     {
         private KompasConnector _kompasConnector;
@@ -183,13 +186,13 @@ namespace ORSAPR
             return planeAngle;
         }
 
-        private ksEntity MovePlane(ksEntity plane, int distanceFromBasePlane)
+        private ksEntity MovePlane(ksEntity plane, int distanceFromAirVentsPlane)
         {
             // Сместить плоскость
             var planeOffset = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_planeOffset);
             ksPlaneOffsetDefinition planeOffsetDefinition = planeOffset.GetDefinition();
             planeOffsetDefinition.direction = true;
-            planeOffsetDefinition.offset = distanceFromBasePlane;
+            planeOffsetDefinition.offset = distanceFromAirVentsPlane;
             planeOffsetDefinition.SetPlane(plane);
             planeOffset.Create();
             return planeOffset;
@@ -199,7 +202,7 @@ namespace ORSAPR
         {
             var axis = CreateAxis(Obj3dType.o3d_planeXOY, Obj3dType.o3d_planeYOZ);
             var planeAngel = CreatePlaneAngle(diskParams.AirVentsAnglePlane, Obj3dType.o3d_planeXOY, axis);
-            var planeOffset = MovePlane(planeAngel, diskParams.DistanceFromBasePlane);
+            var planeOffset = MovePlane(planeAngel, diskParams.DistanceFromAirVentsPlane);
             var sketch = (ksEntity)_part.NewEntity((short)Obj3dType.o3d_sketch);
             //Получаем интерфейс свойств эскиза
             var iDefinitionSketch = sketch.GetDefinition();
