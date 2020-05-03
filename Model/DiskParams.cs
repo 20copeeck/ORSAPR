@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ORSAPR
+namespace Model
 {
     /// <summary>
     /// Параметры диска
@@ -14,11 +11,11 @@ namespace ORSAPR
         /// <summary>
         /// Изначальное значение диаметра диска
         /// </summary>
-        public readonly double DefaultDiskDiameter = 406.4;
+        public readonly int DefaultDiskDiameter = 16;
         /// <summary>
         /// Изначальное значение ширины диска
         /// </summary>
-        public readonly double DefaultWidth = 165.1;
+        public readonly double DefaultWidth = 6.5;
         /// <summary>
         /// Изначальное значение количества отверстий под болты
         /// </summary>
@@ -79,38 +76,40 @@ namespace ORSAPR
         public readonly int DepthExtrusionNippleHoleSketch = 110;
 
         /// <summary>
-        /// Словарь константных значений диаметра расположения вентиляционных отверстий
-        /// относительно диаметра диска 
+        /// Зависимости диаметров расположения вентиляционных отверстий
+        /// от диаметра диска
         /// </summary>
-        public readonly Dictionary<double, double> AirVentsArrangementDiameters = new Dictionary<double, double>
+        public readonly Dictionary<double, double> AirVentsArrangementDiameters = 
+            new Dictionary<double, double>
         {
-            {330.2, 123.1},
-            {355.6, 134.61},
-            {381, 146.12},
-            {406.4, 157.63},
-            {431.8, 169.14},
-            {457.2, 180.65},
-            {482.6, 192.16}
+            {13, 123.1},
+            {14, 134.61},
+            {15, 146.12},
+            {16, 157.63},
+            {17, 169.14},
+            {18, 180.65},
+            {19, 192.16}
         };
         /// <summary>
-        /// Словарь константных значений диаметра расположения отверстия под ниппель
-        /// относительно диаметра диска 
+        /// Зависимости диаметров расположения отверстия под ниппель
+        /// от диаметра диска
         /// </summary>
-        public readonly Dictionary<double, double> NippleHoleArrangementDiameters = new Dictionary<double, double>
+        public readonly Dictionary<double, double> NippleHoleArrangementDiameters = 
+            new Dictionary<double, double>
         {
-            {330.2, 130.43},
-            {355.6, 142.36},
-            {381, 154.29},
-            {406.4, 166.22},
-            {431.8, 178.29},
-            {457.2, 190.23},
-            {482.6, 202.16}
+            {13, -130.43},
+            {14, -142.36},
+            {15, -154.29},
+            {16, -166.22},
+            {17, -178.29},
+            {18, -190.23},
+            {19, -202.16}
         };
 
         /// <summary>
         /// Диаметр диска
         /// </summary>
-        private double _diskDiameter;
+        private int _diskDiameter;
         /// <summary>
         /// Ширина диска
         /// </summary>
@@ -141,7 +140,10 @@ namespace ORSAPR
         /// </summary>
         public AvailableParameters AvailableParameters { get; }
 
-        public double DiskDiameter
+        /// <summary>
+        /// Диаметр диска
+        /// </summary>
+        public int DiskDiameter
         {
             get
             {
@@ -155,9 +157,13 @@ namespace ORSAPR
                 }
                 
                 _diskDiameter = value;
-                AvailableParameters.ChangeCurrentValues(value);
+                AvailableParameters.ChangeDiskDiameterDependentQuantities(value);
             }
         }
+
+        /// <summary>
+        /// Ширина диска
+        /// </summary>
         public double Width
         {
             get
@@ -174,6 +180,10 @@ namespace ORSAPR
                 _width = value;
             }
         }
+
+        /// <summary>
+        /// Количество болтов
+        /// </summary>
         public int BoltsCount
         {
             get
@@ -188,9 +198,13 @@ namespace ORSAPR
                 }
 
                 _boltsCount = value;
-                AvailableParameters.ChangeCurrentValues(DiskDiameter, value, BoltArrangementDiameter);
+                AvailableParameters.ChangeBoltsCountDependentQuantities(DiskDiameter, value);
             }
         }
+
+        /// <summary>
+        /// Диаметр расположения болтов
+        /// </summary>
         public double BoltArrangementDiameter
         {
             get
@@ -205,9 +219,13 @@ namespace ORSAPR
                 }
 
                 _boltArrangementDiameter = value;
-                AvailableParameters.ChangeCurrentValues(DiskDiameter, BoltsCount, value);
+                AvailableParameters.ChangeBoltArrangementDiameterDependentQuantities(DiskDiameter, BoltsCount, value);
             }
         }
+
+        /// <summary>
+        /// Диаметр центрального отверстия
+        /// </summary>
         public double CentralHoleDiameter
         {
             get
@@ -224,6 +242,10 @@ namespace ORSAPR
                 _centralHoleDiameter = value;
             }
         }
+
+        /// <summary>
+        /// Количество вентиляционных отверстий
+        /// </summary>
         public int AirVentsCount 
         {
             get
@@ -240,6 +262,10 @@ namespace ORSAPR
                 _airVentsCount = value;
             }
         }
+
+        /// <summary>
+        /// Диаметр вентиляционный отверстий
+        /// </summary>
         public decimal AirVentsDiameter 
         {
             get
@@ -257,6 +283,9 @@ namespace ORSAPR
             }
         }
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
         public DiskParams()
         {
              _diskDiameter = DefaultDiskDiameter;
@@ -267,7 +296,7 @@ namespace ORSAPR
              _airVentsCount = DefaultAirVentsCount;
              _airVentsDiameter = DefaultAirVentsDiameter;
 
-             AvailableParameters = new AvailableParameters(Converter.ConvertFromSystemOfUnits(_diskDiameter), _boltsCount,
+             AvailableParameters = new AvailableParameters(_diskDiameter, _boltsCount,
                 _boltArrangementDiameter);
         }
     }

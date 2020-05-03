@@ -1,4 +1,4 @@
-﻿namespace View
+﻿namespace ORSAPR
 {
     partial class MainForm
     {
@@ -270,7 +270,7 @@
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Диски в Компас 3D";
+            this.Text = "Диски";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORSAPR", "ORSAPR\ORSAPR.csproj", "{F8725E22-BB03-48A9-BB4B-42B30FAA703A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "ORSAPR\View.csproj", "{F8725E22-BB03-48A9-BB4B-42B30FAA703A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{6BCD93E2-D09A-4DC4-80FC-E36B4745FDEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{DC2D3C6C-6EB6-494F-97A8-DA3927D6C4A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KompasAPI", "KompasAPI\KompasAPI.csproj", "{8532FF9E-58BF-4D95-BC3B-10D79AA16917}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{6BCD93E2-D09A-4DC4-80FC-E36B4745FDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BCD93E2-D09A-4DC4-80FC-E36B4745FDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BCD93E2-D09A-4DC4-80FC-E36B4745FDEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC2D3C6C-6EB6-494F-97A8-DA3927D6C4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC2D3C6C-6EB6-494F-97A8-DA3927D6C4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC2D3C6C-6EB6-494F-97A8-DA3927D6C4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2D3C6C-6EB6-494F-97A8-DA3927D6C4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8532FF9E-58BF-4D95-BC3B-10D79AA16917}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8532FF9E-58BF-4D95-BC3B-10D79AA16917}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8532FF9E-58BF-4D95-BC3B-10D79AA16917}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8532FF9E-58BF-4D95-BC3B-10D79AA16917}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

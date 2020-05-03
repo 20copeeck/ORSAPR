@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Kompas6API5;
-using Kompas6Constants3D;
-using Kompas6Constants;
-using System.Collections.Specialized;
+using Model;
+using KompasAPI;
 
-namespace ORSAPR
+namespace View
 {
     /// <summary>
     /// Главная форма 
@@ -34,14 +27,38 @@ namespace ORSAPR
         public MainForm()
         {
             InitializeComponent();
+            BuildButton.Enabled = false;
 
             _builder = new Builder();
             _diskParams = new DiskParams();
 
-            ChangeComboBoxesItems();
+            var availableParameters = _diskParams.AvailableParameters;
+
+            UpdateComboBox(DiskDiameterComboBox, availableParameters.DiskDiameterValues.ToList(),
+                _diskParams.DiskDiameter);
+            UpdateComboBox(WidthComboBox, availableParameters.WidthValues.ToList(), _diskParams.Width);
+            UpdateComboBox(BoltsCountComboBox, availableParameters.BoltsCountValues.ToList(), _diskParams.BoltsCount);
+            UpdateComboBox(BoltArrangementDiameterComboBox, availableParameters.BoltArrangementDiameterValues.ToList(),
+                _diskParams.BoltArrangementDiameter);
+            UpdateComboBox(CentralHoleDiameterComboBox, availableParameters.CentralHoleDiameterValues.ToList(),
+                _diskParams.CentralHoleDiameter);
+            UpdateComboBox(AirVentsCountComboBox, availableParameters.AirVentsCountValues.ToList(),
+                _diskParams.AirVentsCount);
+
+            AirVentsDiameterNumericUpDown.Value = _diskParams.AirVentsDiameter;
+            AirVentsDiameterNumericUpDown.Maximum = availableParameters.MaxAirVentsDiameter;
+            AirVentsDiameterNumericUpDown.Minimum = availableParameters.MinAirVentsDiameter;
+            AirVentsDiameterNumericUpDown.ReadOnly = true;
+            DiskDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            BoltsCountComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            BoltArrangementDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            WidthComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            CentralHoleDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            AirVentsCountComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
             _diskParams.AvailableParameters.ValuesChanged += ChangeComboBoxesItems;
 
-            DiskDiameterComboBox.SelectedIndexChanged += DoubleComboBox_SelectedIndexChanged;
+            DiskDiameterComboBox.SelectedIndexChanged += IntComboBox_SelectedIndexChanged;
             WidthComboBox.SelectedIndexChanged += DoubleComboBox_SelectedIndexChanged;
             BoltsCountComboBox.SelectedIndexChanged += IntComboBox_SelectedIndexChanged;
             BoltArrangementDiameterComboBox.SelectedIndexChanged += DoubleComboBox_SelectedIndexChanged;
@@ -50,22 +67,41 @@ namespace ORSAPR
             AirVentsDiameterNumericUpDown.ValueChanged += AirVentsDiameterNumericUpDown_ValueChanged;
         }
 
-        private void ChangeComboBoxesItems(object sender, EventArgs e)
-        {
-            ChangeComboBoxesItems();
-        }
-
-        private void ChangeComboBoxesItems()
+        /// <summary>
+        /// Изменить списки элементов комбобоксов
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
+        private void ChangeComboBoxesItems(object sender, ValuesChangeEventArgs e)
         {
             var availableParameters = _diskParams.AvailableParameters;
 
-            UpdateComboBox(DiskDiameterComboBox, availableParameters.DiskDiameterValues.ToList(), _diskParams.DiskDiameter);
-            UpdateComboBox(WidthComboBox, availableParameters.WidthValues.ToList(), _diskParams.Width);
-            UpdateComboBox(BoltsCountComboBox, availableParameters.BoltsCountValues.ToList(), _diskParams.BoltsCount);
-            UpdateComboBox(BoltArrangementDiameterComboBox, availableParameters.BoltArrangementDiameterValues.ToList(), _diskParams.BoltArrangementDiameter);
-            UpdateComboBox(CentralHoleDiameterComboBox, availableParameters.CentralHoleDiameterValues.ToList(), _diskParams.CentralHoleDiameter);
+            if (e.Type == AvailableValuesChangeType.DiskDiameterChanged)
+            {
+                UpdateComboBox(AirVentsCountComboBox, availableParameters.AirVentsCountValues.ToList(),
+                    availableParameters.AirVentsCountValues.First());
+                UpdateComboBox(BoltsCountComboBox, availableParameters.BoltsCountValues.ToList(),
+                    availableParameters.BoltsCountValues.First());
+            }
+
+            if (e.Type != AvailableValuesChangeType.BoltArrangementDiameterChanged)
+            {
+                UpdateComboBox(BoltArrangementDiameterComboBox, availableParameters.BoltArrangementDiameterValues.ToList(),
+                    availableParameters.BoltArrangementDiameterValues.First());
+            }
+
+            UpdateComboBox(WidthComboBox, availableParameters.WidthValues.ToList(), availableParameters.WidthValues.First());
+            UpdateComboBox(CentralHoleDiameterComboBox, availableParameters.CentralHoleDiameterValues.ToList(),
+                availableParameters.CentralHoleDiameterValues.First());
         }
 
+        /// <summary>
+        /// Обновить комбобокс
+        /// </summary>
+        /// <typeparam name="T">Тип параметров</typeparam>
+        /// <param name="comboBox">Комбобокс</param>
+        /// <param name="values">Значения параметров</param>
+        /// <param name="current">Текущее значение параметра</param>
         private void UpdateComboBox<T>(ComboBox comboBox, List<T> values, T current) where T : IComparable<T>
         {
             var items = comboBox.Items;
@@ -83,14 +119,35 @@ namespace ORSAPR
             }
         }
 
+        /// <summary>
+        /// Построить диск
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            if (!_builder.Build(_diskParams))
+            try
             {
-                MessageBox.Show("Ошибка построения");
+                if (!_builder.Build(_diskParams))
+                {
+                    MessageBox.Show("Ошибка построения");
+                }
+            }
+            catch (NullReferenceException exception)
+            {
+                MessageBox.Show($"Ошибка: {exception.Message}");
+            }
+            catch (System.Runtime.InteropServices.COMException exception)
+            {
+                MessageBox.Show("Компас выключен");
             }
         }
 
+        /// <summary>
+        /// Изменить текущее значение параметра типа int 
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
         private void IntComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = GetComboBox(sender);
@@ -102,7 +159,14 @@ namespace ORSAPR
                 var str = comboBox.Name;
                 int index = str.IndexOf("ComboBox");
                 var property = str.Remove(index);
-                typeof(DiskParams).GetProperty(property).SetValue(_diskParams, result);
+                try
+                {
+                    typeof(DiskParams).GetProperty(property).SetValue(_diskParams, result);
+                }
+                catch(ArgumentException exception)
+                {
+                    MessageBox.Show($"Ошибка: {exception.Message}");
+                }
             }
             else
             {
@@ -110,6 +174,11 @@ namespace ORSAPR
             }
         }
 
+        /// <summary>
+        /// зменить текущее значение параметра типа double
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
         private void DoubleComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = GetComboBox(sender);
@@ -121,7 +190,14 @@ namespace ORSAPR
                 var comboBoxName = comboBox.Name;
                 int index = comboBoxName.IndexOf("ComboBox");
                 var property = comboBoxName.Remove(index);
-                typeof(DiskParams).GetProperty(property).SetValue(_diskParams, result);
+                try
+                {
+                    typeof(DiskParams).GetProperty(property).SetValue(_diskParams, result);
+                }
+                catch (ArgumentException exception)
+                {
+                    MessageBox.Show($"Ошибка: {exception.Message}");
+                }
             }
             else
             {
@@ -129,56 +205,68 @@ namespace ORSAPR
             }
         }
 
+        /// <summary>
+        /// Получить комбобокс
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <returns>Комбобокс</returns>
         private ComboBox GetComboBox(object sender)
         {
-            ComboBox comboBox = null;
-
-            try
+            ComboBox comboBox = (ComboBox)sender;
+            if (comboBox == null)
             {
-                comboBox = (ComboBox)sender;
-                if (comboBox == null)
-                {
-                    throw new NullReferenceException("ComboBox не найден");
-                }
+                MessageBox.Show("ComboBox не найден");
             }
-            catch (Exception exception)
-            {
-                MessageBox.Show($"Ошибка: {exception.Message}");
-            }
-
             return comboBox;
         }
 
+        /// <summary>
+        /// Изменить текущее значение для диаметра вентиляционных отверстий
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
         private void AirVentsDiameterNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            NumericUpDown numericUpDown = null;
+            NumericUpDown numericUpDown = (NumericUpDown)sender;
+            if (numericUpDown == null)
+            {
+                MessageBox.Show("NumericUpDown не найден");
+            }
             try
             {
-                numericUpDown = (NumericUpDown)sender;
-                if (numericUpDown == null)
-                {
-                    throw new NullReferenceException("NumericUpDown не найден");
-                }
+                _diskParams.AirVentsDiameter = numericUpDown.Value;
             }
-            catch (Exception exception)
+            catch (ArgumentException exception)
             {
                 MessageBox.Show($"Ошибка: {exception.Message}");
             }
-
-            _diskParams.AirVentsDiameter = numericUpDown.Value;
-
         }
 
+        /// <summary>
+        /// Изменить параметры в соответствии с состоянием чекбокса
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
         private void LaunchCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             if (checkBox.Checked)
             {
                 _builder.KompasConnector.StartKompas();
+                BuildButton.Enabled = true;
             }
             else
             {
-                _builder.KompasConnector.StopKompas();
+                try
+                {
+                    _builder.KompasConnector.StopKompas();
+                }
+                catch (System.Runtime.InteropServices.COMException exception)
+                {
+                    MessageBox.Show("Компас уже выключен");
+                }
+
+                BuildButton.Enabled = false;
             }
         }
     }

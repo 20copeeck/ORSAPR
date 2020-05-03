@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Kompas6API5;
-using Kompas6Constants3D;
-using Kompas6Constants;
+﻿using Kompas6API5;
+using System;
 using System.Runtime.InteropServices;
 
-namespace ORSAPR
+namespace KompasAPI
 {
     /// <summary>
-    /// Класс обеспечивающий запуск и завершение работы программы KOMPAS 3D
+    /// Запуск и завершение работы программы KOMPAS 3D
     /// </summary>
     public class KompasConnector
     {
         /// <summary>
-        /// Объект KOMPAS-а
+        /// Объект Компаса
         /// </summary>
         public KompasObject KompasObject { get; private set; }
 
         /// <summary>
-        /// Открыть программу KOMPAS 3D
+        /// Открыть программу Компас 3D
         /// </summary>
         public void StartKompas()
         {
@@ -42,19 +36,12 @@ namespace ORSAPR
         }
 
         /// <summary>
-        /// Закрыть программу KOMPAS 3D
+        /// Закрыть программу Компас 3D
         /// </summary>
         public void StopKompas()
         {
-            if(KompasObject != null)
-            {
-                KompasObject.Quit();
-                KompasObject = null;
-            }
-            else
-            {
-                throw new Exception("KOMPAS 3D уже закрыт");
-            }
+            KompasObject.Quit();
+            KompasObject = null;
         }
     }
 }
