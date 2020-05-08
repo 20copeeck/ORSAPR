@@ -34,15 +34,23 @@ namespace View
 
             var availableParameters = _diskParams.AvailableParameters;
 
-            UpdateComboBox(DiskDiameterComboBox, availableParameters.DiskDiameterValues.ToList(),
+            UpdateComboBox(DiskDiameterComboBox, 
+                availableParameters.DiskDiameterValues.ToList(),
                 _diskParams.DiskDiameter);
-            UpdateComboBox(WidthComboBox, availableParameters.WidthValues.ToList(), _diskParams.Width);
-            UpdateComboBox(BoltsCountComboBox, availableParameters.BoltsCountValues.ToList(), _diskParams.BoltsCount);
-            UpdateComboBox(BoltArrangementDiameterComboBox, availableParameters.BoltArrangementDiameterValues.ToList(),
+            UpdateComboBox(WidthComboBox, 
+                availableParameters.WidthValues.ToList(), 
+                _diskParams.Width);
+            UpdateComboBox(BoltsCountComboBox, 
+                availableParameters.BoltsCountValues.ToList(), 
+                _diskParams.BoltsCount);
+            UpdateComboBox(BoltArrangementDiameterComboBox, 
+                availableParameters.BoltArrangementDiameterValues.ToList(), 
                 _diskParams.BoltArrangementDiameter);
-            UpdateComboBox(CentralHoleDiameterComboBox, availableParameters.CentralHoleDiameterValues.ToList(),
+            UpdateComboBox(CentralHoleDiameterComboBox, 
+                availableParameters.CentralHoleDiameterValues.ToList(),
                 _diskParams.CentralHoleDiameter);
-            UpdateComboBox(AirVentsCountComboBox, availableParameters.AirVentsCountValues.ToList(),
+            UpdateComboBox(AirVentsCountComboBox, 
+                availableParameters.AirVentsCountValues.ToList(),
                 _diskParams.AirVentsCount);
 
             AirVentsDiameterNumericUpDown.Value = _diskParams.AirVentsDiameter;
@@ -56,15 +64,23 @@ namespace View
             CentralHoleDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             AirVentsCountComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            _diskParams.AvailableParameters.ValuesChanged += ChangeComboBoxesItems;
+            _diskParams.AvailableParameters.ValuesChanged += 
+                ChangeComboBoxesItems;
 
-            DiskDiameterComboBox.SelectedIndexChanged += IntComboBox_SelectedIndexChanged;
-            WidthComboBox.SelectedIndexChanged += DoubleComboBox_SelectedIndexChanged;
-            BoltsCountComboBox.SelectedIndexChanged += IntComboBox_SelectedIndexChanged;
-            BoltArrangementDiameterComboBox.SelectedIndexChanged += DoubleComboBox_SelectedIndexChanged;
-            CentralHoleDiameterComboBox.SelectedIndexChanged += DoubleComboBox_SelectedIndexChanged;
-            AirVentsCountComboBox.SelectedIndexChanged += IntComboBox_SelectedIndexChanged;
-            AirVentsDiameterNumericUpDown.ValueChanged += AirVentsDiameterNumericUpDown_ValueChanged;
+            DiskDiameterComboBox.SelectedIndexChanged += 
+                IntComboBox_SelectedIndexChanged;
+            WidthComboBox.SelectedIndexChanged += 
+                DoubleComboBox_SelectedIndexChanged;
+            BoltsCountComboBox.SelectedIndexChanged += 
+                IntComboBox_SelectedIndexChanged;
+            BoltArrangementDiameterComboBox.SelectedIndexChanged += 
+                DoubleComboBox_SelectedIndexChanged;
+            CentralHoleDiameterComboBox.SelectedIndexChanged += 
+                DoubleComboBox_SelectedIndexChanged;
+            AirVentsCountComboBox.SelectedIndexChanged += 
+                IntComboBox_SelectedIndexChanged;
+            AirVentsDiameterNumericUpDown.ValueChanged += 
+                AirVentsDiameterNumericUpDown_ValueChanged;
         }
 
         /// <summary>
@@ -78,20 +94,25 @@ namespace View
 
             if (e.Type == AvailableValuesChangeType.DiskDiameterChanged)
             {
-                UpdateComboBox(AirVentsCountComboBox, availableParameters.AirVentsCountValues.ToList(),
+                UpdateComboBox(AirVentsCountComboBox, 
+                    availableParameters.AirVentsCountValues.ToList(),
                     availableParameters.AirVentsCountValues.First());
-                UpdateComboBox(BoltsCountComboBox, availableParameters.BoltsCountValues.ToList(),
+                UpdateComboBox(BoltsCountComboBox, 
+                    availableParameters.BoltsCountValues.ToList(),
                     availableParameters.BoltsCountValues.First());
             }
 
             if (e.Type != AvailableValuesChangeType.BoltArrangementDiameterChanged)
             {
-                UpdateComboBox(BoltArrangementDiameterComboBox, availableParameters.BoltArrangementDiameterValues.ToList(),
+                UpdateComboBox(BoltArrangementDiameterComboBox, 
+                    availableParameters.BoltArrangementDiameterValues.ToList(),
                     availableParameters.BoltArrangementDiameterValues.First());
             }
 
-            UpdateComboBox(WidthComboBox, availableParameters.WidthValues.ToList(), availableParameters.WidthValues.First());
-            UpdateComboBox(CentralHoleDiameterComboBox, availableParameters.CentralHoleDiameterValues.ToList(),
+            UpdateComboBox(WidthComboBox, availableParameters.WidthValues.ToList(), 
+                availableParameters.WidthValues.First());
+            UpdateComboBox(CentralHoleDiameterComboBox, 
+                availableParameters.CentralHoleDiameterValues.ToList(),
                 availableParameters.CentralHoleDiameterValues.First());
         }
 
@@ -102,7 +123,8 @@ namespace View
         /// <param name="comboBox">Комбобокс</param>
         /// <param name="values">Значения параметров</param>
         /// <param name="current">Текущее значение параметра</param>
-        private void UpdateComboBox<T>(ComboBox comboBox, List<T> values, T current) where T : IComparable<T>
+        private void UpdateComboBox<T>(ComboBox comboBox, List<T> values, T current) 
+            where T : IComparable<T>
         {
             var items = comboBox.Items;
 
@@ -170,7 +192,8 @@ namespace View
             }
             else
             {
-                MessageBox.Show("Преобразование объекта ComboBoxItem к типу double завершилось с ошибкой");
+                MessageBox.Show("Преобразование объекта ComboBoxItem " +
+                    "к типу double завершилось с ошибкой");
             }
         }
 
@@ -201,7 +224,8 @@ namespace View
             }
             else
             {
-                MessageBox.Show("Преобразование объекта ComboBoxItem к типу double завершилось с ошибкой");
+                MessageBox.Show("Преобразование объекта ComboBoxItem " +
+                    "к типу double завершилось с ошибкой");
             }
         }
 

@@ -48,17 +48,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="AvailableParametersTests.cs" />
+    <Compile Include="DiskParamsTests.cs" />
+    <Compile Include="DoubleExtensionsTests.cs" />
+    <Compile Include="ParamsValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ORSAPR\View.csproj">
-      <Project>{f8725e22-bb03-48a9-bb4b-42b30faa703a}</Project>
-      <Name>View</Name>
-    </ProjectReference>
+    <Compile Include="ValuesChangeEventArgsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{dc2d3c6c-6eb6-494f-97a8-da3927d6c4a1}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

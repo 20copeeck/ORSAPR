@@ -61,12 +61,14 @@ namespace Model
         /// <summary>
         /// Доступные значения диаметра расположения болтов 
         /// </summary>
-        public IReadOnlyList<double> BoltArrangementDiameterValues => _boltArrangementDiameterValues.AsReadOnly();
+        public IReadOnlyList<double> BoltArrangementDiameterValues => 
+            _boltArrangementDiameterValues.AsReadOnly();
 
         /// <summary>
         /// Доступные значения диаметра центрального отверстия
         /// </summary>
-        public IReadOnlyList<double> CentralHoleDiameterValues => _centralHoleDiameterValues.AsReadOnly();
+        public IReadOnlyList<double> CentralHoleDiameterValues => 
+            _centralHoleDiameterValues.AsReadOnly();
 
         /// <summary>
         /// Доступные значения количества вентиляционных отверстий
@@ -88,7 +90,8 @@ namespace Model
         /// <param name="diskDiameter">Диаметр диска</param>
         /// <param name="boltsCount">Количество болтов</param>
         /// <param name="boltArrangementDiameter">Диаметр расположения болтов</param>
-        public AvailableParameters(int diskDiameter, int boltsCount, double boltArrangementDiameter)
+        public AvailableParameters
+            (int diskDiameter, int boltsCount, double boltArrangementDiameter)
         {
             _valuesRelations = new List<List<object>>();
 
@@ -317,7 +320,8 @@ namespace Model
             _valuesRelations[36].Add(new List<double>() { 6, 6.5, 7, 8 });
             _valuesRelations[36].Add(5);
             _valuesRelations[36].Add(114.3);
-            _valuesRelations[36].Add(new List<double>() { 54.1, 60.1, 64.1, 66.1, 67.1, 71.6, 84.1 });
+            _valuesRelations[36].Add(new List<double>() { 54.1, 60.1, 64.1, 66.1, 67.1, 71.6, 
+                84.1 });
 
             _valuesRelations[37].Add(16);
             _valuesRelations[37].Add(new List<double>() { 6.5 });
@@ -532,7 +536,8 @@ namespace Model
 
             ChangeDiskDiameterDependentQuantities(diskDiameter);
             ChangeBoltsCountDependentQuantities(diskDiameter, boltsCount);
-            ChangeBoltArrangementDiameterDependentQuantities(diskDiameter, boltsCount, boltArrangementDiameter);
+            ChangeBoltArrangementDiameterDependentQuantities
+                (diskDiameter, boltsCount, boltArrangementDiameter);
         }
 
         /// <summary>
@@ -541,15 +546,20 @@ namespace Model
         /// <param name="diskDiameter">Диаметр диска</param>
         public void ChangeDiskDiameterDependentQuantities(int diskDiameter)
         {
+            if (!DiskDiameterValues.Any(value => value == diskDiameter))
+            {
+                throw new ArgumentException("Неверное значение диаметра диска");
+            }
             var selectedDiskDiameterLines = ChangeDependentCounts(diskDiameter);
-
-            var selectedBoltsCountLines = ChangeDependentBoltArrangementDiameter(diskDiameter, (int)selectedDiskDiameterLines.First()[2]);
+            var selectedBoltsCountLines = ChangeDependentBoltArrangementDiameter
+                (diskDiameter, (int)selectedDiskDiameterLines.First()[2]);
 
             var currentLine = selectedDiskDiameterLines.First();
             _widthValues = (List<double>)currentLine[1];
             _centralHoleDiameterValues = (List<double>)currentLine[4];
 
-            ValuesChanged?.Invoke(this, new ValuesChangeEventArgs(AvailableValuesChangeType.DiskDiameterChanged));
+            ValuesChanged?.Invoke(this, new ValuesChangeEventArgs
+                (AvailableValuesChangeType.DiskDiameterChanged));
         }
 
         /// <summary>
@@ -559,13 +569,23 @@ namespace Model
         /// <param name="boltsCount">Количество болтов</param>
         public void ChangeBoltsCountDependentQuantities(int diskDiameter, int boltsCount)
         {
-            var selectedBoltsCountLines = ChangeDependentBoltArrangementDiameter(diskDiameter, boltsCount);
+            if (!DiskDiameterValues.Any(value => value == diskDiameter))
+            {
+                throw new ArgumentException("Неверное значение диаметра диска");
+            }
+            if (!BoltsCountValues.Any(value => value == boltsCount))
+            {
+                throw new ArgumentException("Неверное значение количества болтов");
+            }
+            var selectedBoltsCountLines = ChangeDependentBoltArrangementDiameter
+                (diskDiameter, boltsCount);
 
             var currentLine = selectedBoltsCountLines.First();
             _widthValues = (List<double>)currentLine[1];
             _centralHoleDiameterValues = (List<double>)currentLine[4];
 
-            ValuesChanged?.Invoke(this, new ValuesChangeEventArgs(AvailableValuesChangeType.BoltsCountChanged));
+            ValuesChanged?.Invoke(this, new ValuesChangeEventArgs
+                (AvailableValuesChangeType.BoltsCountChanged));
         }
 
         /// <summary>
@@ -574,15 +594,31 @@ namespace Model
         /// <param name="diskDiameter">Диаметр диска</param>
         /// <param name="boltsCount">Количество болтов</param>
         /// <param name="boltArrangementDiameter">Диаметр расположения болтов</param>
-        public void ChangeBoltArrangementDiameterDependentQuantities(int diskDiameter, int boltsCount, double boltArrangementDiameter)
+        public void ChangeBoltArrangementDiameterDependentQuantities
+            (int diskDiameter, int boltsCount, double boltArrangementDiameter)
         {
-            var selectedBoltsCountLines = _valuesRelations.Where(item => (int)item[0] == diskDiameter && (int)item[2] == boltsCount).ToList();
+            if (!DiskDiameterValues.Any(value => value == diskDiameter))
+            {
+                throw new ArgumentException("Неверное значение диаметра диска");
+            }
+            if (!BoltsCountValues.Any(value => value == boltsCount))
+            {
+                throw new ArgumentException("Неверное значение количества болтов");
+            }
+            if (!BoltArrangementDiameterValues.Any(value => value == boltArrangementDiameter))
+            {
+                throw new ArgumentException("Неверное значение диаметра расположения болтов");
+            }
+            var selectedBoltsCountLines = _valuesRelations.Where
+                (item => (int)item[0] == diskDiameter && (int)item[2] == boltsCount).ToList();
 
-            var currentLine = selectedBoltsCountLines.Where(item => ((double)item[3]).EqualTo(boltArrangementDiameter)).First();
+            var currentLine = selectedBoltsCountLines.Where
+                (item => ((double)item[3]).EqualTo(boltArrangementDiameter)).First();
             _widthValues = (List<double>)currentLine[1];
             _centralHoleDiameterValues = (List<double>)currentLine[4];
 
-            ValuesChanged?.Invoke(this, new ValuesChangeEventArgs(AvailableValuesChangeType.BoltArrangementDiameterChanged));
+            ValuesChanged?.Invoke(this, new ValuesChangeEventArgs
+                (AvailableValuesChangeType.BoltArrangementDiameterChanged));
         }
 
         /// <summary>
@@ -595,7 +631,8 @@ namespace Model
         {
             _airVentsCountValues = _airVentsCountRelations[diskDiameter];
 
-            var selectedDiskDiameterLines = _valuesRelations.Where(item => (int)item[0] == diskDiameter).ToList();
+            var selectedDiskDiameterLines = _valuesRelations.Where
+                (item => (int)item[0] == diskDiameter).ToList();
             var collectionBoltsCount = new List<int>();
 
             foreach (var line in selectedDiskDiameterLines)
@@ -617,9 +654,11 @@ namespace Model
         /// <param name="diskDiameter">Диаметр диска</param>
         /// <param name="boltsCount">Количество болтов</param>
         /// <returns>Допустимые зависимости для текущего количества болтов</returns>
-        private List<List<object>> ChangeDependentBoltArrangementDiameter(int diskDiameter, int boltsCount)
+        private List<List<object>> ChangeDependentBoltArrangementDiameter
+            (int diskDiameter, int boltsCount)
         {
-            var selectedBoltsCountLines = _valuesRelations.Where(item => (int)item[0] == diskDiameter && (int)item[2] == boltsCount).ToList();
+            var selectedBoltsCountLines = _valuesRelations.Where
+                (item => (int)item[0] == diskDiameter && (int)item[2] == boltsCount).ToList();
 
             var collectionBoltArrangementDiameter = new List<double>();
 

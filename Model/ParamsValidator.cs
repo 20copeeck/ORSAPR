@@ -16,7 +16,6 @@ namespace Model
         public static bool IsValidDiskDiameter(AvailableParameters availableParameters, 
             int diskDiameter)
         {
-
             return availableParameters.DiskDiameterValues.Any(value => value == diskDiameter);
         }
 

@@ -194,7 +194,8 @@ namespace Model
             {
                 if (!ParamsValidator.IsValidBoltsCount(AvailableParameters, value))
                 {
-                    throw new ArgumentException("Неверное значение количества отверстий под болты");
+                    throw new ArgumentException
+                        ("Неверное значение количества отверстий под болты");
                 }
 
                 _boltsCount = value;
@@ -219,7 +220,8 @@ namespace Model
                 }
 
                 _boltArrangementDiameter = value;
-                AvailableParameters.ChangeBoltArrangementDiameterDependentQuantities(DiskDiameter, BoltsCount, value);
+                AvailableParameters.ChangeBoltArrangementDiameterDependentQuantities
+                    (DiskDiameter, BoltsCount, value);
             }
         }
 
@@ -256,7 +258,8 @@ namespace Model
             {
                 if (!ParamsValidator.IsValidAirVentsCount(AvailableParameters, value))
                 {
-                    throw new ArgumentException("Неверное значение количества вентиляционных отверстий");
+                    throw new ArgumentException
+                        ("Неверное значение количества вентиляционных отверстий");
                 }
 
                 _airVentsCount = value;
@@ -276,7 +279,8 @@ namespace Model
             {
                 if (!ParamsValidator.IsValidAirVentsDiameter(AvailableParameters, value))
                 {
-                    throw new ArgumentException("Неверное значение диаметра вентиляционных отверстий");
+                    throw new ArgumentException
+                        ("Неверное значение диаметра вентиляционных отверстий");
                 }
 
                 _airVentsDiameter = value;
