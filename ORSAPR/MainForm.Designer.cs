@@ -52,6 +52,7 @@
             this.BoltsCountBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.BoltArrangementDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.CentralHoleDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.LaunchDrawingHumpCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AirVentsDiameterNumericUpDown)).BeginInit();
@@ -74,7 +75,7 @@
             // LaunchCheckBox
             // 
             this.LaunchCheckBox.AutoSize = true;
-            this.LaunchCheckBox.Location = new System.Drawing.Point(21, 12);
+            this.LaunchCheckBox.Location = new System.Drawing.Point(18, 12);
             this.LaunchCheckBox.Name = "LaunchCheckBox";
             this.LaunchCheckBox.Size = new System.Drawing.Size(257, 21);
             this.LaunchCheckBox.TabIndex = 0;
@@ -94,7 +95,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 48);
+            this.groupBox1.Location = new System.Drawing.Point(12, 39);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(286, 213);
             this.groupBox1.TabIndex = 2;
@@ -182,7 +183,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(6, 29);
+            this.label6.Location = new System.Drawing.Point(6, 58);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(202, 34);
             this.label6.TabIndex = 16;
@@ -190,7 +191,7 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(6, 72);
+            this.label7.Location = new System.Drawing.Point(6, 101);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(184, 40);
             this.label7.TabIndex = 17;
@@ -199,7 +200,7 @@
             // AirVentsCountComboBox
             // 
             this.AirVentsCountComboBox.FormattingEnabled = true;
-            this.AirVentsCountComboBox.Location = new System.Drawing.Point(212, 39);
+            this.AirVentsCountComboBox.Location = new System.Drawing.Point(212, 68);
             this.AirVentsCountComboBox.Name = "AirVentsCountComboBox";
             this.AirVentsCountComboBox.Size = new System.Drawing.Size(64, 24);
             this.AirVentsCountComboBox.TabIndex = 14;
@@ -207,13 +208,14 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.LaunchDrawingHumpCheckBox);
             this.groupBox2.Controls.Add(this.AirVentsDiameterNumericUpDown);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.AirVentsCountComboBox);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Location = new System.Drawing.Point(12, 280);
+            this.groupBox2.Location = new System.Drawing.Point(12, 258);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(286, 125);
+            this.groupBox2.Size = new System.Drawing.Size(286, 151);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Дополнительные параметры";
@@ -226,7 +228,7 @@
             0,
             0,
             65536});
-            this.AirVentsDiameterNumericUpDown.Location = new System.Drawing.Point(212, 83);
+            this.AirVentsDiameterNumericUpDown.Location = new System.Drawing.Point(212, 112);
             this.AirVentsDiameterNumericUpDown.Maximum = new decimal(new int[] {
             40,
             0,
@@ -248,7 +250,7 @@
             // 
             // BuildButton
             // 
-            this.BuildButton.Location = new System.Drawing.Point(12, 411);
+            this.BuildButton.Location = new System.Drawing.Point(12, 415);
             this.BuildButton.Name = "BuildButton";
             this.BuildButton.Size = new System.Drawing.Size(286, 38);
             this.BuildButton.TabIndex = 1;
@@ -256,17 +258,28 @@
             this.BuildButton.UseVisualStyleBackColor = true;
             this.BuildButton.Click += new System.EventHandler(this.BuildButton_Click);
             // 
+            // LaunchDrawingHumpCheckBox
+            // 
+            this.LaunchDrawingHumpCheckBox.AutoSize = true;
+            this.LaunchDrawingHumpCheckBox.Location = new System.Drawing.Point(9, 30);
+            this.LaunchDrawingHumpCheckBox.Name = "LaunchDrawingHumpCheckBox";
+            this.LaunchDrawingHumpCheckBox.Size = new System.Drawing.Size(206, 21);
+            this.LaunchDrawingHumpCheckBox.TabIndex = 18;
+            this.LaunchDrawingHumpCheckBox.Text = "Вкл/Выкл отрисовку хампа";
+            this.LaunchDrawingHumpCheckBox.UseVisualStyleBackColor = true;
+            this.LaunchDrawingHumpCheckBox.CheckedChanged += new System.EventHandler(this.LaunchDrawingHumpCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(308, 457);
+            this.ClientSize = new System.Drawing.Size(310, 463);
             this.Controls.Add(this.BuildButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.LaunchCheckBox);
-            this.MaximumSize = new System.Drawing.Size(326, 504);
-            this.MinimumSize = new System.Drawing.Size(326, 504);
+            this.MaximumSize = new System.Drawing.Size(328, 510);
+            this.MinimumSize = new System.Drawing.Size(328, 510);
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -274,6 +287,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AirVentsDiameterNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DiskDiameterBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WidthBindingSource)).EndInit();
@@ -310,6 +324,7 @@
         private System.Windows.Forms.BindingSource BoltsCountBindingSource;
         private System.Windows.Forms.BindingSource BoltArrangementDiameterBindingSource;
         private System.Windows.Forms.BindingSource CentralHoleDiameterBindingSource;
+        private System.Windows.Forms.CheckBox LaunchDrawingHumpCheckBox;
     }
 }
 

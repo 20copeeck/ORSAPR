@@ -12,9 +12,11 @@ namespace UnitTests
             "Позитивный тест с изменением диаметра диска")]
         [TestCase(AvailableValuesChangeType.BoltsCountChanged, TestName =
             "Позитивный тест с изменением количества болтов")]
-        [TestCase(AvailableValuesChangeType.BoltArrangementDiameterChanged, TestName =
-            "Позитивный тест с изменением диаметра расположения болтов")]
-        public void GetType_PositiveTest(AvailableValuesChangeType changeType)
+        [TestCase(AvailableValuesChangeType.BoltArrangementDiameterChanged, 
+            TestName = "Позитивный тест с изменением диаметра " +
+            "расположения болтов")]
+        public void GetType_PositiveTest
+            (AvailableValuesChangeType changeType)
         {
             ValuesChangeEventArgs valuesChangeEventArgs = 
                 new ValuesChangeEventArgs(changeType);

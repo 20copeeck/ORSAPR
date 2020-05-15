@@ -53,16 +53,23 @@ namespace View
                 availableParameters.AirVentsCountValues.ToList(),
                 _diskParams.AirVentsCount);
 
-            AirVentsDiameterNumericUpDown.Value = _diskParams.AirVentsDiameter;
-            AirVentsDiameterNumericUpDown.Maximum = availableParameters.MaxAirVentsDiameter;
-            AirVentsDiameterNumericUpDown.Minimum = availableParameters.MinAirVentsDiameter;
+            AirVentsDiameterNumericUpDown.Value = 
+                _diskParams.AirVentsDiameter;
+            AirVentsDiameterNumericUpDown.Maximum = 
+                availableParameters.MaxAirVentsDiameter;
+            AirVentsDiameterNumericUpDown.Minimum = 
+                availableParameters.MinAirVentsDiameter;
             AirVentsDiameterNumericUpDown.ReadOnly = true;
-            DiskDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            DiskDiameterComboBox.DropDownStyle = 
+                ComboBoxStyle.DropDownList;
             BoltsCountComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            BoltArrangementDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            BoltArrangementDiameterComboBox.DropDownStyle = 
+                ComboBoxStyle.DropDownList;
             WidthComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            CentralHoleDiameterComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            AirVentsCountComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            CentralHoleDiameterComboBox.DropDownStyle = 
+                ComboBoxStyle.DropDownList;
+            AirVentsCountComboBox.DropDownStyle = 
+                ComboBoxStyle.DropDownList;
 
             _diskParams.AvailableParameters.ValuesChanged += 
                 ChangeComboBoxesItems;
@@ -88,7 +95,8 @@ namespace View
         /// </summary>
         /// <param name="sender">Отправитель события</param>
         /// <param name="e">Аргументы события</param>
-        private void ChangeComboBoxesItems(object sender, ValuesChangeEventArgs e)
+        private void ChangeComboBoxesItems
+            (object sender, ValuesChangeEventArgs e)
         {
             var availableParameters = _diskParams.AvailableParameters;
 
@@ -123,7 +131,8 @@ namespace View
         /// <param name="comboBox">Комбобокс</param>
         /// <param name="values">Значения параметров</param>
         /// <param name="current">Текущее значение параметра</param>
-        private void UpdateComboBox<T>(ComboBox comboBox, List<T> values, T current) 
+        private void UpdateComboBox<T>
+            (ComboBox comboBox, List<T> values, T current) 
             where T : IComparable<T>
         {
             var items = comboBox.Items;
@@ -148,7 +157,8 @@ namespace View
         /// <param name="e">Аргументы события</param>
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            try
+
+                try
             {
                 if (!_builder.Build(_diskParams))
                 {
@@ -170,7 +180,8 @@ namespace View
         /// </summary>
         /// <param name="sender">Отправитель события</param>
         /// <param name="e">Аргументы события</param>
-        private void IntComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void IntComboBox_SelectedIndexChanged
+            (object sender, EventArgs e)
         {
             ComboBox comboBox = GetComboBox(sender);
 
@@ -183,7 +194,8 @@ namespace View
                 var property = str.Remove(index);
                 try
                 {
-                    typeof(DiskParams).GetProperty(property).SetValue(_diskParams, result);
+                    typeof(DiskParams).GetProperty(property).SetValue
+                        (_diskParams, result);
                 }
                 catch(ArgumentException exception)
                 {
@@ -202,7 +214,8 @@ namespace View
         /// </summary>
         /// <param name="sender">Отправитель события</param>
         /// <param name="e">Аргументы события</param>
-        private void DoubleComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void DoubleComboBox_SelectedIndexChanged
+            (object sender, EventArgs e)
         {
             ComboBox comboBox = GetComboBox(sender);
 
@@ -215,7 +228,8 @@ namespace View
                 var property = comboBoxName.Remove(index);
                 try
                 {
-                    typeof(DiskParams).GetProperty(property).SetValue(_diskParams, result);
+                    typeof(DiskParams).GetProperty(property).SetValue
+                        (_diskParams, result);
                 }
                 catch (ArgumentException exception)
                 {
@@ -249,7 +263,8 @@ namespace View
         /// </summary>
         /// <param name="sender">Отправитель события</param>
         /// <param name="e">Аргументы события</param>
-        private void AirVentsDiameterNumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void AirVentsDiameterNumericUpDown_ValueChanged
+            (object sender, EventArgs e)
         {
             NumericUpDown numericUpDown = (NumericUpDown)sender;
             if (numericUpDown == null)
@@ -292,6 +307,25 @@ namespace View
 
                 BuildButton.Enabled = false;
             }
+        }
+
+        /// <summary>
+        /// Установить флаг хампа в соответствии с чекбоксом
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Аргументы события</param>
+        private void LaunchDrawingHumpCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            if (checkBox.Checked)
+            {
+                _diskParams.HumpFlag = true;
+            }
+            else
+            {
+                _diskParams.HumpFlag = false;
+            }
+
         }
     }
 }

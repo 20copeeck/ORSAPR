@@ -41,13 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArcSegment.cs" />
     <Compile Include="AvailableParameters.cs" />
     <Compile Include="DiskParams.cs" />
     <Compile Include="Enums\AvailableValuesChangeType.cs" />
     <Compile Include="EventArgs\ValuesChangeEventArgs.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="LineSegment.cs" />
     <Compile Include="ParamsValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValuesRelation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

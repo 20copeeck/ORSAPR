@@ -22,7 +22,8 @@ namespace KompasAPI
             KompasObject kompas = null;
             try
             {
-                kompas = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5");
+                kompas = (KompasObject)Marshal.GetActiveObject
+                    ("KOMPAS.Application.5");
                 kompas.Visible = true;
             }
             catch

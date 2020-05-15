@@ -48,12 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArcSegmentTests.cs" />
     <Compile Include="AvailableParametersTests.cs" />
     <Compile Include="DiskParamsTests.cs" />
     <Compile Include="DoubleExtensionsTests.cs" />
+    <Compile Include="LineSegmentTests.cs" />
     <Compile Include="ParamsValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValuesChangeEventArgsTests.cs" />
+    <Compile Include="ValuesRelationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

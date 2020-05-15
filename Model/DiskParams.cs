@@ -38,11 +38,13 @@ namespace Model
         public readonly decimal DefaultAirVentsDiameter = 30;
 
         /// <summary>
-        /// Константное значение угла наклона плоскости эскиза вентиляционных отверстий 
+        /// Константное значение угла наклона плоскости эскиза 
+        /// вентиляционных отверстий 
         /// </summary>
         public readonly int AirVentsAnglePlane = 65;
         /// <summary>
-        /// Константное значение угла наклона плоскости эскиза отвертия под ниппель
+        /// Константное значение угла наклона плоскости эскиза 
+        /// отвертия под ниппель
         /// </summary>
         public readonly int NippleHoleAnglePlane = -20;
         /// <summary>
@@ -58,29 +60,36 @@ namespace Model
         /// </summary>
         public readonly double LengthOfAttachedPlane = 25.69;
         /// <summary>
-        /// Константное значение расстояния сдвига плоскости относительно 
-        /// плоскости вентиляционных отверстий
+        /// Константное значение расстояния сдвига плоскости 
+        /// относительно плоскости вентиляционных отверстий
         /// </summary>
         public readonly int DistanceFromAirVentsPlane = 60;
         /// <summary>
-        /// Константное значение глубины выдавливания вентиляционного отверстия
+        /// Константное значение глубины выдавливания 
+        /// вентиляционного отверстия
         /// </summary>
         public readonly int DepthExtrusionAirVentsSketch = 45;
         /// <summary>
-        /// Константное значение глубины выдавливания отверстия под болт
+        /// Константное значение глубины выдавливания 
+        /// отверстия под болт
         /// </summary>
         public readonly int DepthExtrusionBoltHoleSketch = 65;
         /// <summary>
-        /// Константное значение глубины выдавливания отверстия под ниппель
+        /// Константное значение глубины выдавливания 
+        /// отверстия под ниппель
         /// </summary>
         public readonly int DepthExtrusionNippleHoleSketch = 110;
+        /// <summary>
+        /// Флаг вкл/выкл хампа
+        /// </summary>
+        public bool HumpFlag { get; set; }
 
         /// <summary>
         /// Зависимости диаметров расположения вентиляционных отверстий
         /// от диаметра диска
         /// </summary>
-        public readonly Dictionary<double, double> AirVentsArrangementDiameters = 
-            new Dictionary<double, double>
+        public readonly Dictionary<double, double> 
+            AirVentsArrangementDiameters = new Dictionary<double, double>
         {
             {13, 123.1},
             {14, 134.61},
@@ -94,8 +103,8 @@ namespace Model
         /// Зависимости диаметров расположения отверстия под ниппель
         /// от диаметра диска
         /// </summary>
-        public readonly Dictionary<double, double> NippleHoleArrangementDiameters = 
-            new Dictionary<double, double>
+        public readonly Dictionary<double, double> 
+            NippleHoleArrangementDiameters = new Dictionary<double, double>
         {
             {13, -130.43},
             {14, -142.36},
@@ -151,13 +160,16 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidDiskDiameter(AvailableParameters, value))
+                if (!ParamsValidator.IsValidDiskDiameter
+                    (AvailableParameters, value))
                 {
-                    throw new ArgumentException("Неверное значение диаметра диска");
+                    throw new ArgumentException
+                        ("Неверное значение диаметра диска");
                 }
                 
                 _diskDiameter = value;
-                AvailableParameters.ChangeDiskDiameterDependentQuantities(value);
+                AvailableParameters.ChangeDiskDiameterDependentQuantities
+                    (value);
             }
         }
 
@@ -172,9 +184,11 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidWidth(AvailableParameters, value))
+                if (!ParamsValidator.IsValidWidth
+                    (AvailableParameters, value))
                 {
-                    throw new ArgumentException("Неверное значение ширины диска");
+                    throw new ArgumentException
+                        ("Неверное значение ширины диска");
                 }
 
                 _width = value;
@@ -192,14 +206,16 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidBoltsCount(AvailableParameters, value))
+                if (!ParamsValidator.IsValidBoltsCount
+                    (AvailableParameters, value))
                 {
                     throw new ArgumentException
                         ("Неверное значение количества отверстий под болты");
                 }
 
                 _boltsCount = value;
-                AvailableParameters.ChangeBoltsCountDependentQuantities(DiskDiameter, value);
+                AvailableParameters.ChangeBoltsCountDependentQuantities
+                    (DiskDiameter, value);
             }
         }
 
@@ -214,7 +230,8 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidBoltArrangementDiameter(AvailableParameters, value))
+                if (!ParamsValidator.IsValidBoltArrangementDiameter
+                    (AvailableParameters, value))
                 {
                     throw new ArgumentException("Неверное значение PCD");
                 }
@@ -236,9 +253,11 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidCentralHoleDiameter(AvailableParameters, value))
+                if (!ParamsValidator.IsValidCentralHoleDiameter
+                    (AvailableParameters, value))
                 {
-                    throw new ArgumentException("Неверное значение центрального отверстия диска");
+                    throw new ArgumentException
+                        ("Неверное значение центрального отверстия диска");
                 }
 
                 _centralHoleDiameter = value;
@@ -256,7 +275,8 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidAirVentsCount(AvailableParameters, value))
+                if (!ParamsValidator.IsValidAirVentsCount
+                    (AvailableParameters, value))
                 {
                     throw new ArgumentException
                         ("Неверное значение количества вентиляционных отверстий");
@@ -277,7 +297,8 @@ namespace Model
             }
             set
             {
-                if (!ParamsValidator.IsValidAirVentsDiameter(AvailableParameters, value))
+                if (!ParamsValidator.IsValidAirVentsDiameter
+                    (AvailableParameters, value))
                 {
                     throw new ArgumentException
                         ("Неверное значение диаметра вентиляционных отверстий");
@@ -300,8 +321,8 @@ namespace Model
              _airVentsCount = DefaultAirVentsCount;
              _airVentsDiameter = DefaultAirVentsDiameter;
 
-             AvailableParameters = new AvailableParameters(_diskDiameter, _boltsCount,
-                _boltArrangementDiameter);
+             AvailableParameters = new AvailableParameters
+                (_diskDiameter, _boltsCount, _boltArrangementDiameter);
         }
     }
 }
