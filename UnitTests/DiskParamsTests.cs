@@ -19,6 +19,28 @@ namespace UnitTests
             _diskParams = new DiskParams();
         }
 
+        [Test(Description =
+            "Позитивный тест сеттера свойства HumpFlag")]
+        [TestCase(true, TestName = "Позитивный тест с установкой true")]
+        [TestCase(false, TestName = "Позитивный тест с установкой false")]
+        public void SetHumpFlag_PositiveTest(bool flag)
+        {
+            _diskParams.HumpFlag = flag;
+        }
+
+        [Test(Description =
+            "Позитивный тест геттера свойства HumpFlag")]
+        [TestCase(true, TestName = "Позитивный тест с true")]
+        [TestCase(false, TestName = "Позитивный тест с false")]
+        public void GetHumpFlag_PositiveTest(bool flag)
+        {
+            var expected = flag;
+            _diskParams.HumpFlag = expected;
+            var actual = _diskParams.HumpFlag;
+            Assert.AreEqual(expected, actual,
+                "Геттер HumpFlag возвращает неправильное значение");
+        }
+
         [Test(Description = 
             "Негативный тест сеттера свойства DiskDiameter")]
         [TestCase(12, TestName = 

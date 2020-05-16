@@ -79,10 +79,6 @@ namespace Model
         /// отверстия под ниппель
         /// </summary>
         public readonly int DepthExtrusionNippleHoleSketch = 110;
-        /// <summary>
-        /// Флаг вкл/выкл хампа
-        /// </summary>
-        public bool HumpFlag { get; set; }
 
         /// <summary>
         /// Зависимости диаметров расположения вентиляционных отверстий
@@ -143,6 +139,11 @@ namespace Model
         /// Диаметр вентиляционных отверстий
         /// </summary>
         private decimal _airVentsDiameter;
+
+        /// <summary>
+        /// Флаг вкл/выкл хампа
+        /// </summary>
+        public bool HumpFlag { get; set; }
 
         /// <summary>
         /// Доступные параметры

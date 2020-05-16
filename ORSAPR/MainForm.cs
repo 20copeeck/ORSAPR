@@ -157,7 +157,6 @@ namespace View
         /// <param name="e">Аргументы события</param>
         private void BuildButton_Click(object sender, EventArgs e)
         {
-
             try
             {
                 if (!_builder.Build(_diskParams))
