@@ -45,6 +45,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.AirVentsCountComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.LaunchDrawingHumpCheckBox = new System.Windows.Forms.CheckBox();
             this.AirVentsDiameterNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.BuildButton = new System.Windows.Forms.Button();
             this.DiskDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -52,7 +53,6 @@
             this.BoltsCountBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.BoltArrangementDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.CentralHoleDiameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.LaunchDrawingHumpCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AirVentsDiameterNumericUpDown)).BeginInit();
@@ -220,6 +220,17 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Дополнительные параметры";
             // 
+            // LaunchDrawingHumpCheckBox
+            // 
+            this.LaunchDrawingHumpCheckBox.AutoSize = true;
+            this.LaunchDrawingHumpCheckBox.Location = new System.Drawing.Point(9, 30);
+            this.LaunchDrawingHumpCheckBox.Name = "LaunchDrawingHumpCheckBox";
+            this.LaunchDrawingHumpCheckBox.Size = new System.Drawing.Size(206, 21);
+            this.LaunchDrawingHumpCheckBox.TabIndex = 18;
+            this.LaunchDrawingHumpCheckBox.Text = "Вкл/Выкл отрисовку хампа";
+            this.LaunchDrawingHumpCheckBox.UseVisualStyleBackColor = true;
+            this.LaunchDrawingHumpCheckBox.CheckedChanged += new System.EventHandler(this.LaunchDrawingHumpCheckBox_CheckedChanged);
+            // 
             // AirVentsDiameterNumericUpDown
             // 
             this.AirVentsDiameterNumericUpDown.DecimalPlaces = 1;
@@ -258,17 +269,6 @@
             this.BuildButton.UseVisualStyleBackColor = true;
             this.BuildButton.Click += new System.EventHandler(this.BuildButton_Click);
             // 
-            // LaunchDrawingHumpCheckBox
-            // 
-            this.LaunchDrawingHumpCheckBox.AutoSize = true;
-            this.LaunchDrawingHumpCheckBox.Location = new System.Drawing.Point(9, 30);
-            this.LaunchDrawingHumpCheckBox.Name = "LaunchDrawingHumpCheckBox";
-            this.LaunchDrawingHumpCheckBox.Size = new System.Drawing.Size(206, 21);
-            this.LaunchDrawingHumpCheckBox.TabIndex = 18;
-            this.LaunchDrawingHumpCheckBox.Text = "Вкл/Выкл отрисовку хампа";
-            this.LaunchDrawingHumpCheckBox.UseVisualStyleBackColor = true;
-            this.LaunchDrawingHumpCheckBox.CheckedChanged += new System.EventHandler(this.LaunchDrawingHumpCheckBox_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -283,7 +283,7 @@
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Диски в Компас 3D";
+            this.Text = "Диски 3D";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

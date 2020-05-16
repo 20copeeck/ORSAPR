@@ -158,7 +158,7 @@ namespace View
         private void BuildButton_Click(object sender, EventArgs e)
         {
 
-                try
+            try
             {
                 if (!_builder.Build(_diskParams))
                 {
